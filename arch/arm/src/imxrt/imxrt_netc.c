@@ -199,6 +199,46 @@ static void imxrt_netc_configure_pins(void)
     }
 }
 
+static int imxrt_netc_board_initialize(void)
+{
+  uint32_t regval;
+  int ret;
+
+  /* Match the RT1180-EVK Zephyr board initialization for the direct
+   * ENETC0/ETH4 path: select RMII, drive its reference clock out, unlock
+   * IERB, allow CM33 MSI-X accesses, then relock the NETC configuration.
+   */
+
+  modifyreg32(IMXRT_NETC_LINK4_CFG, NETC_LINK_CFG_MII_PROTOCOL_MASK,
+              NETC_LINK_CFG_MII_PROTOCOL_RMII);
+  modifyreg32(IMXRT_NETC_PORT_MISC_CFG, 0,
+              NETC_PORT4_RMII_REF_CLK_OUTPUT);
+
+  modifyreg32(IMXRT_NETC_PRIV_NETCRR, NETC_PRIV_NETCRR_LOCK, 0);
+  ret = imxrt_netc_wait_clear(IMXRT_NETC_PRIV_NETCRR,
+                              NETC_PRIV_NETCRR_LOCK);
+  if (ret < 0)
+    {
+      nerr("NETC: IERB unlock timed out\n");
+      return ret;
+    }
+
+  regval = getreg32(IMXRT_NETC_IERB_RCMSIAMQR);
+  regval &= ~NETC_IERB_RCMSIAMQR_MSI_MASK;
+  regval |= NETC_IERB_RCMSIAMQR_MSI_CM33;
+  putreg32(regval, IMXRT_NETC_IERB_RCMSIAMQR);
+
+  modifyreg32(IMXRT_NETC_PRIV_NETCRR, 0, NETC_PRIV_NETCRR_LOCK);
+  ret = imxrt_netc_wait_clear(IMXRT_NETC_PRIV_NETCSR,
+                              NETC_PRIV_NETCSR_STATE);
+  if (ret < 0)
+    {
+      nerr("NETC: IERB relock timed out\n");
+    }
+
+  return ret;
+}
+
 static int imxrt_netc_emdio_initialize(void)
 {
   uint32_t divisor;
@@ -206,6 +246,12 @@ static int imxrt_netc_emdio_initialize(void)
   int ret;
 
   imxrt_netc_configure_pins();
+
+  ret = imxrt_netc_board_initialize();
+  if (ret < 0)
+    {
+      return ret;
+    }
 
   /* Reset the independent EMDIO PCI function, then permit its register
    * accesses.  MSI-X is deliberately not configured in this MDIO-only slice.
@@ -274,6 +320,7 @@ static int imxrt_netc_probe_phy(struct imxrt_netc_driver_s *priv)
 
 static void imxrt_netc_scan_phys(void)
 {
+  uint16_t status;
   uint16_t phyid1;
   uint16_t phyid2;
   uint8_t phyaddr;
@@ -295,8 +342,30 @@ static void imxrt_netc_scan_phys(void)
         }
       else
         {
-          ninfo("NETC: MDIO scan %02u: %04x:%04x\n",
-                phyaddr, phyid1, phyid2);
+          /* BMSR link status is latched low.  Read it twice so this scan can
+           * identify which physical jack currently has a link partner.
+           */
+
+          ret = imxrt_netc_mdio_read(phyaddr, NETC_PHY_BMSR, &status);
+          if (ret == OK)
+            {
+              ret = imxrt_netc_mdio_read(phyaddr, NETC_PHY_BMSR, &status);
+            }
+
+          if (ret < 0)
+            {
+              ninfo("NETC: MDIO scan %02u: %04x:%04x status NR (%d)\n",
+                    phyaddr, phyid1, phyid2, ret);
+            }
+          else
+            {
+              ninfo("NETC: MDIO scan %02u: %04x:%04x BMSR=%04x "
+                    "link=%s an=%s\n",
+                    phyaddr, phyid1, phyid2, status,
+                    (status & NETC_PHY_BMSR_LINK) != 0 ? "up" : "down",
+                    (status & NETC_PHY_BMSR_AN_COMPLETE) != 0 ?
+                    "complete" : "incomplete");
+            }
         }
     }
 

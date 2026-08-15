@@ -29,6 +29,25 @@
 
 /* NETC function 1 is the independent external MDIO controller. */
 
+#define IMXRT_BLK_CTRL_WAKEUPMIX_BASE     0x42420000u
+#define IMXRT_NETC_PORT_MISC_CFG          (IMXRT_BLK_CTRL_WAKEUPMIX_BASE + 0x24u)
+#define IMXRT_NETC_LINK4_CFG               (IMXRT_BLK_CTRL_WAKEUPMIX_BASE + 0x110u)
+
+#define NETC_PORT4_RMII_REF_CLK_OUTPUT     (1u << 4)
+#define NETC_LINK_CFG_MII_PROTOCOL_MASK    0x0fu
+#define NETC_LINK_CFG_MII_PROTOCOL_RMII    1u
+
+#define IMXRT_NETC_IERB_BASE              0x60800000u
+#define IMXRT_NETC_IERB_RCMSIAMQR          (IMXRT_NETC_IERB_BASE + 0x20cu)
+#define NETC_IERB_RCMSIAMQR_MSI_MASK       (7u << 27)
+#define NETC_IERB_RCMSIAMQR_MSI_CM33       (1u << 27)
+
+#define IMXRT_NETC_PRIV_BASE              0x60900000u
+#define IMXRT_NETC_PRIV_NETCRR             (IMXRT_NETC_PRIV_BASE + 0x100u)
+#define IMXRT_NETC_PRIV_NETCSR             (IMXRT_NETC_PRIV_BASE + 0x104u)
+#define NETC_PRIV_NETCRR_LOCK              (1u << 1)
+#define NETC_PRIV_NETCSR_STATE             (1u << 1)
+
 #define IMXRT_NETC_F3_BASE                0x60003000u
 #define IMXRT_NETC_F3_COMMAND             (IMXRT_NETC_F3_BASE + 0x0004u)
 #define IMXRT_NETC_F3_DEVICE_CONTROL      (IMXRT_NETC_F3_BASE + 0x0048u)
