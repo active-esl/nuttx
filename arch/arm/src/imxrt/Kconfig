@@ -434,9 +434,10 @@ config IMXRT_NETC
 	select ARCH_HAVE_PHY
 	select ARCH_HAVE_NETDEV_STATISTICS
 	---help---
-		Enable the RT118x NETC driver path.  The initial implementation
-		registers ENETC0 as eth0 and supports an external Clause 22 MDIO
-		PHY-ID probe.  Packet DMA and MSI-X support are not yet implemented.
+		Enable the RT118x NETC ENETC0 path.  The fork-local implementation
+		registers eth0, probes the external Clause 22 PHY, and uses aligned
+		OCRAM descriptor/buffer pools with explicit cache maintenance.
+		Rx is polled until MSGINTR/MSI-X support is implemented.
 
 if IMXRT_NETC
 
