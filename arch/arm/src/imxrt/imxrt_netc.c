@@ -397,10 +397,10 @@ static int imxrt_netc_rings_initialize(struct imxrt_netc_driver_s *priv,
       return -EACCES;
     }
 
-  command = getreg16(IMXRT_NETC_F0_DEVICE_CONTROL);
+  command = getreg16(IMXRT_NETC_F3_DEVICE_CONTROL);
   putreg16(command | NETC_PCI_DEVICE_CONTROL_FLR,
-           IMXRT_NETC_F0_DEVICE_CONTROL);
-  ret = imxrt_netc_wait_clear(IMXRT_NETC_F0_DEVICE_CONTROL,
+           IMXRT_NETC_F3_DEVICE_CONTROL);
+  ret = imxrt_netc_wait_clear(IMXRT_NETC_F3_DEVICE_CONTROL,
                               NETC_PCI_DEVICE_CONTROL_FLR);
   if (ret < 0)
     {
@@ -408,9 +408,9 @@ static int imxrt_netc_rings_initialize(struct imxrt_netc_driver_s *priv,
       return ret;
     }
 
-  command = getreg16(IMXRT_NETC_F0_COMMAND);
+  command = getreg16(IMXRT_NETC_F3_COMMAND);
   command |= NETC_PCI_COMMAND_MEMORY | NETC_PCI_COMMAND_MASTER;
-  putreg16(command, IMXRT_NETC_F0_COMMAND);
+  putreg16(command, IMXRT_NETC_F3_COMMAND);
 
   memset(priv->txring, 0, sizeof(priv->txring));
   memset(priv->rxring, 0, sizeof(priv->rxring));

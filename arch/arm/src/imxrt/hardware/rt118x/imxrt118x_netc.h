@@ -29,9 +29,9 @@
 
 /* NETC function 1 is the independent external MDIO controller. */
 
-#define IMXRT_NETC_F0_BASE                0x60000000u
-#define IMXRT_NETC_F0_COMMAND             (IMXRT_NETC_F0_BASE + 0x0004u)
-#define IMXRT_NETC_F0_DEVICE_CONTROL      (IMXRT_NETC_F0_BASE + 0x0048u)
+#define IMXRT_NETC_F3_BASE                0x60003000u
+#define IMXRT_NETC_F3_COMMAND             (IMXRT_NETC_F3_BASE + 0x0004u)
+#define IMXRT_NETC_F3_DEVICE_CONTROL      (IMXRT_NETC_F3_BASE + 0x0048u)
 
 #define IMXRT_NETC_F1_BASE                0x60001000u
 #define IMXRT_NETC_F1_COMMAND             (IMXRT_NETC_F1_BASE + 0x0004u)
