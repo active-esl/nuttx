@@ -423,8 +423,42 @@ config IMXRT_USBDEV
 config IMXRT_ENET
 	bool "Ethernet"
 	default n
+	depends on !ARCH_FAMILY_IMXRT118x
 	select ARCH_HAVE_PHY
 	select ARCH_HAVE_NETDEV_STATISTICS
+
+config IMXRT_NETC
+	bool "RT118x NETC Ethernet (experimental)"
+	default n
+	depends on ARCH_FAMILY_IMXRT118x && NET
+	select ARCH_HAVE_PHY
+	select ARCH_HAVE_NETDEV_STATISTICS
+	---help---
+		Enable the RT118x NETC driver path.  The initial implementation
+		registers ENETC0 as eth0 and supports an external Clause 22 MDIO
+		PHY-ID probe.  Packet DMA and MSI-X support are not yet implemented.
+
+if IMXRT_NETC
+
+config IMXRT_NETC_CLOCK_FREQUENCY
+	int "NETC root clock frequency"
+	default 333333333
+	---help---
+		Frequency in Hz of the programmed NETC root used to derive MDC.
+		The board clock and access-control setup must make this true before
+		the driver is initialized.
+
+config IMXRT_NETC_PHY_ADDRESS
+	int "ENETC0 external PHY address"
+	range 0 31
+	default 3
+
+config IMXRT_NETC_MDIO_TIMEOUT_US
+	int "MDIO/reset polling timeout (microseconds)"
+	range 100 1000000
+	default 100000
+
+endif # IMXRT_NETC
 
 config IMXRT_LCD
 	bool "LCD controller"
