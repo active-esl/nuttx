@@ -62,6 +62,8 @@
 
 extern void __start(void);
 
+static void start(void) naked_function;
+
 static void start(void)
 {
   /* Zero lr to mark the end of backtrace */

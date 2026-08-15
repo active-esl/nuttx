@@ -22,6 +22,12 @@ SECTIONS
     KEEP(*(.vectors))
   } > itcm
 
+  .reset :
+  {
+    *(.text.start)
+    *(.text.__start)
+  } > itcm
+
   .text :
   {
     *(.text .text.*)
