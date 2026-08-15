@@ -29,8 +29,6 @@
 
 #include <nuttx/config.h>
 
-#include "hardware/imxrt_pinmux.h"
-
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
@@ -38,5 +36,35 @@
 #define BOARD_XTAL_FREQUENCY       24000000u
 #define BOARD_CPU_FREQUENCY        24000000u
 #define BOARD_LPUART_FREQUENCY     24000000u
+
+/* User LEDs ****************************************************************/
+
+#define BOARD_USERLED_GREEN         0
+#define BOARD_USERLED_RED           1
+#define BOARD_NLEDS                 2
+
+#define BOARD_USERLED_GREEN_BIT     (1 << BOARD_USERLED_GREEN)
+#define BOARD_USERLED_RED_BIT       (1 << BOARD_USERLED_RED)
+
+/* When CONFIG_ARCH_LEDS is selected, green indicates a completed boot and
+ * red flashes on panic.  Other transient states leave the LEDs unchanged.
+ */
+
+#define LED_STARTED                 0
+#define LED_HEAPALLOCATE            2
+#define LED_IRQSENABLED             2
+#define LED_STACKCREATED            1
+#define LED_INIRQ                   2
+#define LED_SIGNAL                  2
+#define LED_ASSERTION               2
+#define LED_PANIC                   3
+#undef LED_IDLE
+
+/* Buttons ******************************************************************/
+
+#define BUTTON_SW8                  0
+#define NUM_BUTTONS                 1
+
+#define BUTTON_SW8_BIT              (1 << BUTTON_SW8)
 
 #endif /* __BOARDS_ARM_IMXRT_IMXRT1180_EVK_INCLUDE_BOARD_H */

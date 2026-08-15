@@ -968,6 +968,8 @@ config ARCH_BOARD_IMXRT1170_EVK
 config ARCH_BOARD_IMXRT1180_EVK
 	bool "NXP i.MX RT 1180 EVK (Cortex-M33)"
 	depends on ARCH_CHIP_MIMXRT1189
+	select ARCH_HAVE_LEDS
+	select ARCH_HAVE_BUTTONS
 	---help---
 		This is the Cortex-M33 board configuration for the NXP MIMXRT1180-EVK.
 

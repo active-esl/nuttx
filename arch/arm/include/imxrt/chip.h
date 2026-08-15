@@ -86,7 +86,7 @@
 #  define IMXRT_GPIO_NPORTS            13           /* Thirteen total ports */
 #elif defined(CONFIG_ARCH_CHIP_MIMXRT1189)
 #  define IMXRT_OCRAM_SIZE              (768 * 1024)
-#  define IMXRT_GPIO_NPORTS             1
+#  define IMXRT_GPIO_NPORTS             6
 #  define ARMV8M_PERIPHERAL_INTERRUPTS  239
 #else
 #  error "Unknown i.MX RT chip type"

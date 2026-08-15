@@ -26,6 +26,7 @@
 
 #include <nuttx/config.h>
 
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -38,11 +39,20 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
+#define IOMUXC_AON_MUX_AON04      (IMXRT_IOMUXC_AON_BASE + 0x10)
 #define IOMUXC_AON_MUX_AON08      (IMXRT_IOMUXC_AON_BASE + 0x20)
 #define IOMUXC_AON_MUX_AON09      (IMXRT_IOMUXC_AON_BASE + 0x24)
+#define IOMUXC_AON_PAD_AON04      (IMXRT_IOMUXC_AON_BASE + 0x84)
 #define IOMUXC_AON_PAD_AON08      (IMXRT_IOMUXC_AON_BASE + 0x94)
 #define IOMUXC_AON_PAD_AON09      (IMXRT_IOMUXC_AON_BASE + 0x98)
+
+#define IOMUXC_MUX_AD26           (IMXRT_IOMUXC_BASE + 0x174)
+#define IOMUXC_MUX_AD27           (IMXRT_IOMUXC_BASE + 0x178)
+
+#define IOMUXC_MUX_ALT0           0x00u
+#define IOMUXC_MUX_ALT5           0x05u
 #define IOMUXC_PAD_UART_DEFAULT   0x02u
+#define IOMUXC_PAD_BUTTON_DEFAULT 0x0eu
 
 /****************************************************************************
  * Public Data
@@ -50,7 +60,12 @@
 
 const uintptr_t g_gpio_base[IMXRT_GPIO_NPORTS] =
 {
-  IMXRT_GPIO1_BASE
+  IMXRT_GPIO1_BASE,
+  IMXRT_GPIO2_BASE,
+  IMXRT_GPIO3_BASE,
+  IMXRT_GPIO4_BASE,
+  IMXRT_GPIO5_BASE,
+  IMXRT_GPIO6_BASE
 };
 
 /****************************************************************************
@@ -68,22 +83,70 @@ const uintptr_t g_gpio_base[IMXRT_GPIO_NPORTS] =
 int imxrt_config_gpio(gpio_pinset_t pinset)
 {
   unsigned int index = pinset & 0xffffu;
+  unsigned int mode = pinset & GPIO_MODE_MASK;
+  unsigned int port;
+  unsigned int pin;
+  uint32_t mask;
 
-  if ((pinset & GPIO_MODE_MASK) == GPIO_PERIPH)
+  if (mode == GPIO_PERIPH)
     {
       if (index == IMXRT_PADMUX_GPIO_AON_08_INDEX)
         {
-          putreg32(0, IOMUXC_AON_MUX_AON08);
+          putreg32(IOMUXC_MUX_ALT0, IOMUXC_AON_MUX_AON08);
           putreg32(IOMUXC_PAD_UART_DEFAULT, IOMUXC_AON_PAD_AON08);
           return OK;
         }
 
       if (index == IMXRT_PADMUX_GPIO_AON_09_INDEX)
         {
-          putreg32(0, IOMUXC_AON_MUX_AON09);
+          putreg32(IOMUXC_MUX_ALT0, IOMUXC_AON_MUX_AON09);
           putreg32(IOMUXC_PAD_UART_DEFAULT, IOMUXC_AON_PAD_AON09);
           return OK;
         }
+
+      return -EINVAL;
+    }
+
+  if (index == IMXRT_PADMUX_GPIO_AON_04_INDEX)
+    {
+      putreg32(IOMUXC_MUX_ALT5, IOMUXC_AON_MUX_AON04);
+      putreg32(IOMUXC_PAD_BUTTON_DEFAULT, IOMUXC_AON_PAD_AON04);
+    }
+  else if (index == IMXRT_PADMUX_GPIO_AD_26_INDEX)
+    {
+      putreg32(IOMUXC_MUX_ALT5, IOMUXC_MUX_AD26);
+    }
+  else if (index == IMXRT_PADMUX_GPIO_AD_27_INDEX)
+    {
+      putreg32(IOMUXC_MUX_ALT5, IOMUXC_MUX_AD27);
+    }
+  else
+    {
+      return -EINVAL;
+    }
+
+  port = (pinset & GPIO_PORT_MASK) >> GPIO_PORT_SHIFT;
+  pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+
+  if (port >= IMXRT_GPIO_NPORTS)
+    {
+      return -EINVAL;
+    }
+
+  mask = GPIO_PIN(pin);
+
+  if (mode == GPIO_OUTPUT)
+    {
+      imxrt_gpio_write(pinset, (pinset & GPIO_OUTPUT_ONE) != 0);
+      modifyreg32(IMXRT_GPIO_GDIR(port), 0, mask);
+    }
+  else if (mode == GPIO_INPUT)
+    {
+      modifyreg32(IMXRT_GPIO_GDIR(port), mask, 0);
+    }
+  else
+    {
+      return -EINVAL;
     }
 
   return OK;
@@ -99,8 +162,16 @@ int imxrt_config_gpio(gpio_pinset_t pinset)
 
 void imxrt_gpio_write(gpio_pinset_t pinset, bool value)
 {
-  (void)pinset;
-  (void)value;
+  unsigned int port = (pinset & GPIO_PORT_MASK) >> GPIO_PORT_SHIFT;
+  unsigned int pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+  uint32_t mask = GPIO_PIN(pin);
+
+  if (port >= IMXRT_GPIO_NPORTS)
+    {
+      return;
+    }
+
+  putreg32(mask, value ? IMXRT_GPIO_SET(port) : IMXRT_GPIO_CLEAR(port));
 }
 
 /****************************************************************************
@@ -113,6 +184,13 @@ void imxrt_gpio_write(gpio_pinset_t pinset, bool value)
 
 bool imxrt_gpio_read(gpio_pinset_t pinset)
 {
-  (void)pinset;
-  return false;
+  unsigned int port = (pinset & GPIO_PORT_MASK) >> GPIO_PORT_SHIFT;
+  unsigned int pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+
+  if (port >= IMXRT_GPIO_NPORTS)
+    {
+      return false;
+    }
+
+  return (getreg32(IMXRT_GPIO_PSR(port)) & GPIO_PIN(pin)) != 0;
 }

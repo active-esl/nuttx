@@ -1,5 +1,5 @@
 /****************************************************************************
- * arch/arm/src/imxrt/hardware/rt118x/imxrt118x_pinmux.h
+ * boards/arm/imxrt/imxrt1180-evk/src/imxrt_autoleds.c
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -20,40 +20,57 @@
  *
  ****************************************************************************/
 
-#ifndef __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_PINMUX_H
-#define __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_PINMUX_H
-
 /****************************************************************************
  * Included Files
  ****************************************************************************/
 
+#include <nuttx/config.h>
+
+#include <stdbool.h>
+
+#include <arch/board/board.h>
+
 #include "imxrt_gpio.h"
+#include "imxrt1180-evk.h"
+
+#ifdef CONFIG_ARCH_LEDS
 
 /****************************************************************************
- * Pre-processor Definitions
+ * Public Functions
  ****************************************************************************/
 
-/* The low 16 bits carry a small RT1180-specific pin identifier consumed by
- * imxrt118x_gpio.c.  AON identifiers match the pad number; main-domain
- * GPIO_AD identifiers start at 0x100.
- */
+void imxrt_autoled_initialize(void)
+{
+  imxrt_config_gpio(GPIO_LED_GREEN);
+  imxrt_config_gpio(GPIO_LED_RED);
+}
 
-#define IMXRT_PADMUX_GPIO_AON_04_INDEX  4
-#define IMXRT_PADMUX_GPIO_AON_08_INDEX  8
-#define IMXRT_PADMUX_GPIO_AON_09_INDEX  9
-#define IMXRT_PADMUX_GPIO_AD_26_INDEX   0x11a
-#define IMXRT_PADMUX_GPIO_AD_27_INDEX   0x11b
+void board_autoled_on(int led)
+{
+  if (led == LED_STARTED)
+    {
+      imxrt_gpio_write(GPIO_LED_GREEN, false);
+      imxrt_gpio_write(GPIO_LED_RED, false);
+    }
+  else if (led == LED_STACKCREATED)
+    {
+      imxrt_gpio_write(GPIO_LED_GREEN, true);
+      imxrt_gpio_write(GPIO_LED_RED, false);
+    }
+  else if (led == LED_PANIC)
+    {
+      imxrt_gpio_write(GPIO_LED_GREEN, false);
+      imxrt_gpio_write(GPIO_LED_RED, true);
+    }
+}
 
-#define GPIO_LPUART1_TX (GPIO_PERIPH | GPIO_ALT0 | \
-                         IMXRT_PADMUX_GPIO_AON_08_INDEX)
-#define GPIO_LPUART1_RX (GPIO_PERIPH | GPIO_ALT0 | \
-                         IMXRT_PADMUX_GPIO_AON_09_INDEX)
+void board_autoled_off(int led)
+{
+  if (led == LED_STARTED || led == LED_STACKCREATED || led == LED_PANIC)
+    {
+      imxrt_gpio_write(GPIO_LED_GREEN, false);
+      imxrt_gpio_write(GPIO_LED_RED, false);
+    }
+}
 
-#define GPIO_GPIO1_IO04 (GPIO_INPUT | GPIO_PORT1 | GPIO_PIN4 | \
-                         IMXRT_PADMUX_GPIO_AON_04_INDEX)
-#define GPIO_GPIO4_IO26 (GPIO_OUTPUT | GPIO_PORT4 | GPIO_PIN26 | \
-                         IMXRT_PADMUX_GPIO_AD_26_INDEX)
-#define GPIO_GPIO4_IO27 (GPIO_OUTPUT | GPIO_PORT4 | GPIO_PIN27 | \
-                         IMXRT_PADMUX_GPIO_AD_27_INDEX)
-
-#endif /* __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_PINMUX_H */
+#endif /* CONFIG_ARCH_LEDS */

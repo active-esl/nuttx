@@ -26,7 +26,15 @@
 
 #include <nuttx/config.h>
 
+#include <syslog.h>
+
 #include <nuttx/board.h>
+
+#ifdef CONFIG_USERLED_LOWER
+#  include <nuttx/leds/userled.h>
+#endif
+
+#include "imxrt1180-evk.h"
 
 /****************************************************************************
  * Public Functions
@@ -42,5 +50,21 @@
 
 int imxrt_bringup(void)
 {
-  return 0;
+#ifdef CONFIG_USERLED_LOWER
+  int ret;
+
+  ret = userled_lower_initialize(LED_DRIVER_PATH);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: userled_lower_initialize() failed: %d\n",
+             ret);
+      return ret;
+    }
+#endif
+
+#ifdef CONFIG_ARCH_BUTTONS
+  board_button_initialize();
+#endif
+
+  return OK;
 }

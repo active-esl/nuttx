@@ -45,6 +45,11 @@
 #define IMXRT_IOMUXC_BASE           0x42a10000u
 #define IMXRT_CCM_BASE              0x44450000u
 #define IMXRT_GPIO1_BASE            0x47400000u
+#define IMXRT_GPIO2_BASE            0x43810000u
+#define IMXRT_GPIO3_BASE            0x43820000u
+#define IMXRT_GPIO4_BASE            0x43830000u
+#define IMXRT_GPIO5_BASE            0x43840000u
+#define IMXRT_GPIO6_BASE            0x43850000u
 #define IMXRT_GPT1_BASE             0x446c0000u
 #define IMXRT_LPIT1_BASE            0x442f0000u
 #define IMXRT_WDOG1_BASE            0x442d0000u

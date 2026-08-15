@@ -1,5 +1,5 @@
 /****************************************************************************
- * boards/arm/imxrt/imxrt1180-evk/src/imxrt_boot.c
+ * boards/arm/imxrt/imxrt1180-evk/src/imxrt1180-evk.h
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -20,71 +20,38 @@
  *
  ****************************************************************************/
 
+#ifndef __BOARDS_ARM_IMXRT_IMXRT1180_EVK_SRC_IMXRT1180_EVK_H
+#define __BOARDS_ARM_IMXRT_IMXRT1180_EVK_SRC_IMXRT1180_EVK_H
+
 /****************************************************************************
  * Included Files
  ****************************************************************************/
 
 #include <nuttx/config.h>
 
-#include "imxrt_start.h"
-#include "imxrt1180-evk.h"
+#include "hardware/rt118x/imxrt118x_pinmux.h"
 
 /****************************************************************************
- * Public Functions
+ * Pre-processor Definitions
  ****************************************************************************/
+
+/* Both user LEDs are active high. */
+
+#define GPIO_LED_GREEN (GPIO_GPIO4_IO27 | GPIO_OUTPUT_ZERO)
+#define GPIO_LED_RED   (GPIO_GPIO4_IO26 | GPIO_OUTPUT_ZERO)
+
+/* SW8 is pulled high and driven low while pressed. */
+
+#define GPIO_SW8       GPIO_GPIO1_IO04
+
+#define LED_DRIVER_PATH "/dev/userleds"
 
 /****************************************************************************
- * Name: imxrt_ocram_initialize
- *
- * Description:
- *   Initialize on-chip RAM.
- *
+ * Public Function Prototypes
  ****************************************************************************/
 
-void imxrt_ocram_initialize(void)
-{
-}
-
-/****************************************************************************
- * Name: imxrt_flexram_partition
- *
- * Description:
- *   Configure the FlexRAM partition.
- *
- ****************************************************************************/
-
-void imxrt_flexram_partition(void)
-{
-}
-
-/****************************************************************************
- * Name: imxrt_boardinitialize
- *
- * Description:
- *   Perform early board initialization.
- *
- ****************************************************************************/
-
-void imxrt_boardinitialize(void)
-{
 #ifdef CONFIG_ARCH_LEDS
-  imxrt_autoled_initialize();
+void imxrt_autoled_initialize(void);
 #endif
-}
 
-#ifdef CONFIG_BOARD_LATE_INITIALIZE
-extern int imxrt_bringup(void);
-
-/****************************************************************************
- * Name: board_late_initialize
- *
- * Description:
- *   Perform late board initialization.
- *
- ****************************************************************************/
-
-void board_late_initialize(void)
-{
-  imxrt_bringup();
-}
-#endif /* CONFIG_BOARD_LATE_INITIALIZE */
+#endif /* __BOARDS_ARM_IMXRT_IMXRT1180_EVK_SRC_IMXRT1180_EVK_H */
