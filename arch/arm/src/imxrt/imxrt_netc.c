@@ -272,6 +272,37 @@ static int imxrt_netc_probe_phy(struct imxrt_netc_driver_s *priv)
   return OK;
 }
 
+static void imxrt_netc_scan_phys(void)
+{
+  uint16_t phyid1;
+  uint16_t phyid2;
+  uint8_t phyaddr;
+  int ret;
+
+  ninfo("NETC: MDIO scan begin\n");
+
+  for (phyaddr = 0; phyaddr < 32; phyaddr++)
+    {
+      ret = imxrt_netc_mdio_read(phyaddr, NETC_PHY_ID1, &phyid1);
+      if (ret == OK)
+        {
+          ret = imxrt_netc_mdio_read(phyaddr, NETC_PHY_ID2, &phyid2);
+        }
+
+      if (ret < 0)
+        {
+          ninfo("NETC: MDIO scan %02u: NR (%d)\n", phyaddr, ret);
+        }
+      else
+        {
+          ninfo("NETC: MDIO scan %02u: %04x:%04x\n",
+                phyaddr, phyid1, phyid2);
+        }
+    }
+
+  ninfo("NETC: MDIO scan end\n");
+}
+
 static int imxrt_netc_phy_link(bool *linkup, bool *speed100,
                                bool *full_duplex)
 {
@@ -766,6 +797,7 @@ int imxrt_netc_initialize(void)
       return ret;
     }
 
+  imxrt_netc_scan_phys();
   priv->mdio_status = imxrt_netc_probe_phy(priv);
 
   priv->dev.d_buf       = priv->buffer;

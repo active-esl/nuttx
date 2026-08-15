@@ -62,9 +62,6 @@ SECTIONS
     __exidx_end = ABSOLUTE(.);
   } > ocram
 
-  . = ALIGN(4);
-  _eronly = ABSOLUTE(.);
-
   .data :
   {
     _sdata = ABSOLUTE(.);
@@ -74,6 +71,13 @@ SECTIONS
     . = ALIGN(4);
     _edata = ABSOLUTE(.);
   } > ocram
+
+  /* Use the output section load address rather than the preceding location
+   * counter.  Input alignment can otherwise leave a gap before .data and
+   * make the startup copy shift every initialized object.
+   */
+
+  _eronly = LOADADDR(.data);
 
   .ramfunc ALIGN(4) :
   {
