@@ -1,0 +1,191 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Active ESL fork infrastructure. Do not include this fork-only workflow in an
+# apache/nuttx pull request.
+
+name: Active ESL pre-upstream
+
+on:
+  push:
+    branches:
+      - "feat/mimxrt1180-*"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Fork branch, tag, or SHA to test
+        required: true
+        default: feat/mimxrt1180-evk-cm33-nsh
+        type: string
+      base_ref:
+        description: Apache base branch used for the contribution range
+        required: true
+        default: master
+        type: string
+      board_config:
+        description: Direct board configuration to build
+        required: true
+        default: imxrt1180-evk:nsh
+        type: string
+      run_docs:
+        description: Reproduce the Apache documentation build
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aesl-pre-upstream-${{ github.event.pull_request.head.ref || inputs.ref || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TEST_REF: ${{ github.event.pull_request.head.sha || inputs.ref || github.sha }}
+  BASE_REF: ${{ inputs.base_ref || 'master' }}
+  BOARD_CONFIG: ${{ inputs.board_config || 'imxrt1180-evk:nsh' }}
+
+jobs:
+  check-build:
+    name: Check and RT1180 build
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       startsWith(github.head_ref, 'feat/mimxrt1180-'))
+    runs-on: [self-hosted, Linux, X64, aesl, esl-proxmox]
+    timeout-minutes: 90
+    container:
+      image: ghcr.io/apache/nuttx/apache-nuttx-ci-linux@sha256:e4037bc11d6f3cc5ff0e6d908f2b42295a3fad6c41d1c623bae40ce85165a5d3
+      options: --user root
+    steps:
+      - name: Record self-hosted runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Runner"
+            echo
+            echo "- Name: \`${RUNNER_NAME}\`"
+            echo "- Environment: \`${RUNNER_ENVIRONMENT}\`"
+            echo "- OS/arch: \`${RUNNER_OS}/${RUNNER_ARCH}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          hostname
+
+      - name: Checkout NuttX feature ref
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TEST_REF }}
+          fetch-depth: 0
+          path: sources/nuttx
+
+      - name: Checkout upstream nuttx-apps
+        uses: actions/checkout@v7
+        with:
+          repository: apache/nuttx-apps
+          ref: master
+          fetch-depth: 1
+          path: sources/apps
+
+      - name: Fetch Apache contribution base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/sources/nuttx"
+          git -C sources/nuttx remote add apache https://github.com/apache/nuttx.git
+          git -C sources/nuttx fetch --no-tags apache "$BASE_REF"
+
+      - name: Run Apache Check workflow command
+        shell: bash
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install --yes --no-install-recommends python3.10-venv
+          python_bin=
+          for candidate in python3.12 python3.11 python3.10 python3; do
+            if command -v "$candidate" >/dev/null 2>&1; then
+              python_bin=$(command -v "$candidate")
+              break
+            fi
+          done
+          test -n "$python_bin"
+          "$python_bin" -m venv "$RUNNER_TEMP/nuttx-check-venv"
+          source "$RUNNER_TEMP/nuttx-check-venv/bin/activate"
+          pip install codespell cmake-format black isort flake8 cvt2utf
+          cd sources/nuttx
+          merge_base=$(git merge-base "apache/$BASE_REF" HEAD)
+          echo "Checking ${merge_base}..HEAD"
+          tools/checkpatch.sh -c -u -m -g "${merge_base}..HEAD"
+
+      - name: Build requested RT1180 configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S sources/nuttx -B build -G Ninja \
+            -DBOARD_CONFIG="$BOARD_CONFIG" \
+            -DNUTTX_APPS_DIR="$GITHUB_WORKSPACE/sources/apps"
+          cmake --build build --parallel
+          arm-none-eabi-size build/nuttx
+
+  documentation:
+    name: Build Documentation
+    if: >-
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.head.repo.full_name == github.repository &&
+        startsWith(github.head_ref, 'feat/mimxrt1180-'))) &&
+      (github.event_name != 'workflow_dispatch' || inputs.run_docs)
+    runs-on: [self-hosted, Linux, X64, aesl, esl-proxmox]
+    timeout-minutes: 45
+    container:
+      image: python@sha256:f398d30910ff241f726ab281c3d69ee460e7d9c3f45360fbe24b43386db17646
+      options: --user root
+    steps:
+      - name: Record self-hosted runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Runner"
+            echo
+            echo "- Name: \`${RUNNER_NAME}\`"
+            echo "- Environment: \`${RUNNER_ENVIRONMENT}\`"
+            echo "- OS/arch: \`${RUNNER_OS}/${RUNNER_ARCH}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          hostname
+
+      - name: Install documentation tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install --yes --no-install-recommends git make plantuml
+          pip install pipenv
+
+      - name: Checkout NuttX feature ref
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TEST_REF }}
+          fetch-depth: 1
+          path: sources/nuttx
+
+      - name: Reproduce Apache documentation build
+        shell: bash
+        env:
+          PIPENV_VENV_IN_PROJECT: "1"
+        run: |
+          set -euo pipefail
+          cd sources/nuttx/Documentation
+          pipenv sync
+          pipenv run make html
