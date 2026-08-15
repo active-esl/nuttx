@@ -9,11 +9,12 @@ config IMXRT1180_EVK_DTCM
 	default y
 
 config IMXRT1180_EVK_OCRAM_TEXT
-	bool "Execute text from OCRAM"
+	bool "Use split ITCM/OCRAM layout"
 	default n
 	---help---
-		Place the vector table in ITCM and executable/read-only sections in
-		OCRAM.  This layout is intended for debugger-loaded images that do not
-		fit in the 128 KiB CM33 ITCM, such as network-enabled configurations.
+		Place vectors and executable sections in ITCM, with read-only and
+		writable sections in OCRAM.  This layout is intended for debugger-loaded
+		images where CM33 can read and write OCRAM but OCRAM instruction fetches
+		are blocked by the current ELE/TRDC debug handoff.
 
 endif

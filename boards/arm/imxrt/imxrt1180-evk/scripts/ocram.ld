@@ -7,7 +7,7 @@
 MEMORY
 {
   itcm (rwx) : ORIGIN = 0x0ffe0000, LENGTH = 128K
-  ocram (rwx) : ORIGIN = 0x20480000, LENGTH = 512K
+  ocram (rw) : ORIGIN = 0x20480000, LENGTH = 512K
 }
 
 OUTPUT_ARCH(arm)
@@ -31,15 +31,19 @@ SECTIONS
   .text :
   {
     *(.text .text.*)
-    *(.rodata .rodata.*)
     *(.fixup)
     *(.gnu.warning)
     *(.gnu.linkonce.t.*)
-    *(.gnu.linkonce.r.*)
     *(.glue_7)
     *(.glue_7t)
     *(.got)
     *(.gcc_except_table)
+  } > itcm
+
+  .rodata :
+  {
+    *(.rodata .rodata.*)
+    *(.gnu.linkonce.r.*)
     _etext = ABSOLUTE(.);
   } > ocram
 
