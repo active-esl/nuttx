@@ -104,7 +104,11 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE/sources/nuttx"
-          git -C sources/nuttx remote add apache https://github.com/apache/nuttx.git
+          if git -C sources/nuttx remote get-url apache >/dev/null 2>&1; then
+            git -C sources/nuttx remote set-url apache https://github.com/apache/nuttx.git
+          else
+            git -C sources/nuttx remote add apache https://github.com/apache/nuttx.git
+          fi
           git -C sources/nuttx fetch --no-tags apache "$BASE_REF"
 
       - name: Run Apache Check workflow command
