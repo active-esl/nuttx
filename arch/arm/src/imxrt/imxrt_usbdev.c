@@ -51,7 +51,12 @@
 #ifdef CONFIG_ARCH_FAMILY_IMXRT106x
 #  include "hardware/rt106x/imxrt106x_ccm.h"
 #endif
-#include "imxrt_periphclks.h"
+#ifdef CONFIG_ARCH_FAMILY_IMXRT118x
+#  include "hardware/imxrt_ccm.h"
+#  include "imxrt_clockconfig.h"
+#else
+#  include "imxrt_periphclks.h"
+#endif
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -2786,11 +2791,11 @@ static int imxrt_pullup(struct usbdev_s *dev, bool enable)
     {
       imxrt_setbits(USBDEV_USBCMD_RS, IMXRT_USBDEV_USBCMD(0));
 
-#ifdef CONFIG_IMXRT_USB0DEV_NOVBUS
+#ifdef CONFIG_IMXRT_USBDEV_NOVBUS
       /* Create a 'false' power event on the USB port so the MAC connects */
 
-      imxrt_clrbits(USBOTG_OTGSC_VD, IMXRT_USBOTG_OTGSC);
-      imxrt_setbits(USBOTG_OTGSC_VC, IMXRT_USBOTG_OTGSC);
+      imxrt_clrbits(USBOTG_OTGSC_VD, IMXRT_USBOTG_OTGSC(0));
+      imxrt_setbits(USBOTG_OTGSC_VC, IMXRT_USBOTG_OTGSC(0));
 #endif
     }
   else
@@ -2886,9 +2891,13 @@ void arm_usbinitialize(void)
 
   /* Clock run */
 
+#ifdef CONFIG_ARCH_FAMILY_IMXRT118x
+  imxrt_clockgate_configure(CCM_CCGR_USB, true);
+#else
   imxrt_clockall_usboh3();
+#endif
 
-#ifdef CONFIG_ARCH_FAMILY_IMXRT117x
+#if defined(CONFIG_ARCH_FAMILY_IMXRT117x) || defined(CONFIG_ARCH_FAMILY_IMXRT118x)
   up_mdelay(1);
 
   putreg32(USBPHY_PLL_SIC_PLL_POWER |
@@ -3005,7 +3014,11 @@ void arm_usbuninitialize(void)
    * if Device or Host code is expanded to support both OTG Cores.
    */
 
+#ifdef CONFIG_ARCH_FAMILY_IMXRT118x
+  imxrt_clockgate_configure(CCM_CCGR_USB, false);
+#else
   imxrt_clockoff_usboh3();
+#endif
 
   leave_critical_section(flags);
 }

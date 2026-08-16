@@ -124,6 +124,7 @@ config ARCH_CHIP_MIMXRT1186
 	bool "MIMXRT1186 (Cortex-M33)"
 	select ARCH_CORTEXM33
 	select ARCH_FAMILY_IMXRT118x
+	select IMXRT_HAVE_USBOTG1
 
 endchoice # i.MX RT Chip Selection
 
@@ -419,6 +420,8 @@ config IMXRT_USBOTG2
 config IMXRT_USBDEV
 	bool "USB Device"
 	default n
+	depends on IMXRT_HAVE_USBOTG1 || IMXRT_HAVE_USBOTG2
+	select USBDEV
 
 config IMXRT_ENET
 	bool "Ethernet"

@@ -32,6 +32,10 @@
 #include <nuttx/debug.h>
 #include <nuttx/fs/fs.h>
 
+#ifdef CONFIG_CDCACM
+#  include <nuttx/usb/cdcacm.h>
+#endif
+
 #ifdef CONFIG_IMXRT_NETC
 #  include "imxrt_netc.h"
 #endif
@@ -50,7 +54,8 @@
 
 int imxrt_bringup(void)
 {
-#if defined(CONFIG_FS_PROCFS) || defined(CONFIG_IMXRT_NETC)
+#if defined(CONFIG_FS_PROCFS) || defined(CONFIG_IMXRT_NETC) || \
+    defined(CONFIG_CDCACM)
   int ret;
 #endif
 
@@ -60,6 +65,22 @@ int imxrt_bringup(void)
     {
       syslog(LOG_ERR, "ERROR: Failed to mount procfs at /proc: %d\n", ret);
     }
+#endif
+
+#if !defined(CONFIG_BOARDCTL_USBDEVCTRL) && \
+    !defined(CONFIG_USBDEV_COMPOSITE) && \
+    !defined(CONFIG_SYSTEM_CDCACM)
+#  ifdef CONFIG_CDCACM
+  /* SYSTEM_CDCACM provides sercon/serdis for bring-up; only auto-bind when
+   * that helper is absent.
+   */
+
+  ret = cdcacm_initialize(0, NULL);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: cdcacm_initialize failed: %d\n", ret);
+    }
+#  endif
 #endif
 
 #ifdef CONFIG_IMXRT_NETC
