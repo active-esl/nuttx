@@ -222,6 +222,11 @@ jobs:
         uses: github/super-linter@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PR runs set GITHUB_SHA to the ephemeral merge commit, which is not
+          # in this checkout (ref = TEST_REF / PR head). Point super-linter at
+          # the checked-out tip so changed-file discovery does not fail with
+          # `fatal: bad object`.
+          GITHUB_SHA: ${{ env.TEST_REF }}
           DEFAULT_BRANCH: master
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_PYTHON_BLACK: true
