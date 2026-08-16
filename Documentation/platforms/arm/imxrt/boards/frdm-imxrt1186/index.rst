@@ -13,10 +13,14 @@ Supported features
 * Cortex-M33 ARMv8-M build
 * SysTick
 * LPUART1 console on GPIO_AON_08 (TX) and GPIO_AON_09 (RX)
+* RT118x CCM register definitions for all clock roots and peripheral gates
+* Clock root and LPCG configuration API
 * NSH
 
 This board is distinct from the MIMXRT1180-EVK, which uses MIMXRT1189 silicon
 in a 289-pin package.  Board pinmux definitions are not interchangeable.
 
-The port does not yet contain a ROM-bootable FlexSPI image, TRDC programming,
-or ELE startup integration.
+The debugger-load configuration keeps the Cortex-M33 and LPUART1 on the
+always-available 24 MHz RC oscillator.  PLL initialization and PLL-derived
+root-frequency reporting require ELE/TRDC integration and are not yet enabled.
+The port also does not yet contain a ROM-bootable FlexSPI image.
