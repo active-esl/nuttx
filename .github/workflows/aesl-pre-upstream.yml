@@ -37,8 +37,8 @@ on:
         required: true
         default: master
         type: string
-      board_config:
-        description: Direct board configuration to build
+      board_configs:
+        description: Space-separated board configurations to build
         required: true
         default: frdm-imxrt1186:nsh
         type: string
@@ -58,7 +58,7 @@ concurrency:
 env:
   TEST_REF: ${{ github.event.pull_request.head.sha || inputs.ref || github.sha }}
   BASE_REF: ${{ inputs.base_ref || 'master' }}
-  BOARD_CONFIG: ${{ inputs.board_config || 'frdm-imxrt1186:nsh' }}
+  BOARD_CONFIGS: ${{ inputs.board_configs || 'frdm-imxrt1186:nsh' }}
 
 jobs:
   check-build:
@@ -167,17 +167,69 @@ jobs:
           cd sources/nuttx
           merge_base=$(git merge-base "apache/$BASE_REF" HEAD)
           echo "Checking ${merge_base}..HEAD"
-          tools/checkpatch.sh -c -u -g "${merge_base}..HEAD"
+          tools/checkpatch.sh -c -u -m -g "${merge_base}..HEAD"
 
-      - name: Build requested RT118x configuration
+      - name: Build requested RT118x configurations with CMake
         shell: bash
         run: |
           set -euo pipefail
-          cmake -S sources/nuttx -B build -G Ninja \
-            -DBOARD_CONFIG="$BOARD_CONFIG" \
-            -DNUTTX_APPS_DIR="$GITHUB_WORKSPACE/sources/apps"
-          cmake --build build --parallel
-          arm-none-eabi-size build/nuttx
+          read -r -a configs <<< "$BOARD_CONFIGS"
+          ((${#configs[@]} > 0))
+          for config in "${configs[@]}"; do
+            [[ "$config" =~ ^[[:alnum:]_.-]+:[[:alnum:]_./-]+$ ]]
+            build_dir="build-${config//:/-}"
+            build_dir="${build_dir//\//-}"
+            cmake -S sources/nuttx -B "$build_dir" -G Ninja \
+              -DBOARD_CONFIG="$config" \
+              -DNUTTX_APPS_DIR="$GITHUB_WORKSPACE/sources/apps"
+            cmake --build "$build_dir" --parallel
+            arm-none-eabi-size "$build_dir/nuttx"
+          done
+
+      - name: Reproduce Apache cibuild for requested configurations
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r -a configs <<< "$BOARD_CONFIGS"
+          ((${#configs[@]} > 0))
+          for config in "${configs[@]}"; do
+            [[ "$config" =~ ^[[:alnum:]_.-]+:[[:alnum:]_./-]+$ ]]
+          done
+          printf '%s\n' "${configs[@]}" > "$RUNNER_TEMP/aesl-rt118x.dat"
+          cd sources/nuttx/tools/ci
+          ./cibuild.sh -c -A -N -R -S "$RUNNER_TEMP/aesl-rt118x.dat"
+
+  lint:
+    name: Apache Lint
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       (startsWith(github.head_ref, 'feat/mimxrt1180-') ||
+        startsWith(github.head_ref, 'feat/frdm-')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - name: Checkout NuttX feature ref
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TEST_REF }}
+          fetch-depth: 0
+
+      - name: Reproduce Apache changed-file lint
+        uses: github/super-linter@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: master
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_PYTHON_BLACK: true
+          VALIDATE_PYTHON_FLAKE8: true
+          PYTHON_FLAKE8_CONFIG_FILE: setup.cfg
+          VALIDATE_PYTHON_ISORT: true
+          PYTHON_ISORT_CONFIG_FILE: setup.cfg
+          VALIDATE_YAML: true
 
   documentation:
     name: Build Documentation
