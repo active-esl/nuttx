@@ -78,6 +78,13 @@ SECTIONS
     _ebss = ABSOLUTE(.);
   } > ocram
 
+  .clockstatus (NOLOAD) :
+  {
+    *(.clockstatus)
+    . = ALIGN(4);
+    _eclockstatus = ABSOLUTE(.);
+  } > ocram
+
   /DISCARD/ : { *(.note .note.*) }
 
   .stab 0 : { *(.stab) }

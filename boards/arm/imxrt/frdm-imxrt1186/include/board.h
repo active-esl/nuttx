@@ -36,7 +36,7 @@
  ****************************************************************************/
 
 #define BOARD_XTAL_FREQUENCY       24000000u
-#define BOARD_CPU_FREQUENCY        24000000u
+#define BOARD_CPU_FREQUENCY        240000000u
 #define BOARD_LPUART_FREQUENCY     24000000u
 
 #endif /* __BOARDS_ARM_IMXRT_FRDM_IMXRT1186_INCLUDE_BOARD_H */

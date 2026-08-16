@@ -71,6 +71,17 @@ enum imxrt_pll_e
   IMXRT_PLL_AUDIO
 };
 
+#define IMXRT_CLOCK_STATUS_ELE_READY       (1u << 0)
+#define IMXRT_CLOCK_STATUS_TRDC_AON         (1u << 1)
+#define IMXRT_CLOCK_STATUS_TRDC_MEGA        (1u << 2)
+#define IMXRT_CLOCK_STATUS_TRDC_WAKEUP      (1u << 3)
+#define IMXRT_CLOCK_STATUS_PLL_LDO          (1u << 4)
+#define IMXRT_CLOCK_STATUS_SYS_PLL3         (1u << 5)
+#define IMXRT_CLOCK_STATUS_ROOTS_CONFIGURED (1u << 6)
+
+extern volatile uint32_t g_imxrt118x_clock_status;
+extern volatile int32_t g_imxrt118x_clock_error;
+
 void imxrt_clockconfig(void);
 int imxrt_clockroot_configure(unsigned int root, unsigned int mux,
                               unsigned int divider, bool enable);

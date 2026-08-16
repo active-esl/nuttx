@@ -115,8 +115,14 @@
 
 #define PHY_LDO_ENABLE                          (1u << 0)
 #define PHY_LDO_POWERUP                         (1u << 1)
-#define PHY_LDO_OUTPUT_ENABLE                   (1u << 2)
+#define PHY_LDO_CURRENT_LIMIT_ENABLE            (1u << 2)
 #define PHY_LDO_BYPASS                          (1u << 3)
+#define PHY_LDO_OUTPUT_TARGET_SHIFT             4
+#define PHY_LDO_OUTPUT_TARGET_MASK              (0x1fu << \
+                                                  PHY_LDO_OUTPUT_TARGET_SHIFT)
+#define PHY_LDO_OUTPUT_TARGET(n)                (((uint32_t)(n) << \
+                                                  PHY_LDO_OUTPUT_TARGET_SHIFT) & \
+                                                 PHY_LDO_OUTPUT_TARGET_MASK)
 #define PHY_LDO_STABLE                          (1u << 31)
 
 #endif /* __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_PMU_H */

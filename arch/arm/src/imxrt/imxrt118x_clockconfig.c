@@ -35,8 +35,10 @@
 
 #include "arm_internal.h"
 #include "hardware/imxrt_ccm.h"
+#include "hardware/rt118x/imxrt118x_ele.h"
 #include "hardware/rt118x/imxrt118x_osc.h"
 #include "hardware/rt118x/imxrt118x_pll.h"
+#include "hardware/rt118x/imxrt118x_pmu.h"
 #include "imxrt_clockconfig.h"
 
 /****************************************************************************
@@ -49,6 +51,204 @@
 #define IMXRT118X_SYSPLL1_FREQUENCY     1000000000u
 #define IMXRT118X_SYSPLL2_FREQUENCY     528000000u
 #define IMXRT118X_SYSPLL3_FREQUENCY     480000000u
+#define IMXRT118X_ELE_TIMEOUT           1000000u
+#define IMXRT118X_PLL_TIMEOUT           1000000u
+
+/****************************************************************************
+ * Public Data
+ ****************************************************************************/
+
+volatile uint32_t g_imxrt118x_clock_status
+  __attribute__((section(".clockstatus")));
+volatile int32_t g_imxrt118x_clock_error
+  __attribute__((section(".clockstatus")));
+
+/****************************************************************************
+ * Private Functions
+ ****************************************************************************/
+
+static bool imxrt_wait_mask(uintptr_t address, uint32_t mask, bool set)
+{
+  unsigned int timeout;
+
+  for (timeout = IMXRT118X_ELE_TIMEOUT; timeout > 0; timeout--)
+    {
+      if (((getreg32(address) & mask) != 0) == set)
+        {
+          return true;
+        }
+    }
+
+  return false;
+}
+
+static int imxrt_ele_command(const uint32_t *request,
+                             unsigned int request_size,
+                             uint32_t expected, uint32_t *response)
+{
+  uint32_t header;
+  unsigned int i;
+  unsigned int size;
+
+  for (i = 0; i < request_size; i++)
+    {
+      if (!imxrt_wait_mask(IMXRT_S3MUA_TSR, 1u << i, true))
+        {
+          return -ETIMEDOUT;
+        }
+
+      putreg32(request[i], IMXRT_S3MUA_TR(i));
+    }
+
+  if (!imxrt_wait_mask(IMXRT_S3MUA_RSR, 1u, true))
+    {
+      return -ETIMEDOUT;
+    }
+
+  header = getreg32(IMXRT_S3MUA_RR(0));
+  size = (header >> 8) & 0xffu;
+  if (header != expected || size < 2 || size > 4)
+    {
+      return -EPROTO;
+    }
+
+  response[0] = header;
+  for (i = 1; i < size; i++)
+    {
+      if (!imxrt_wait_mask(IMXRT_S3MUA_RSR, 1u << i, true))
+        {
+          return -ETIMEDOUT;
+        }
+
+      response[i] = getreg32(IMXRT_S3MUA_RR(i));
+    }
+
+  return response[1] == IMXRT_ELE_RESPONSE_SUCCESS ? OK : -EACCES;
+}
+
+static int imxrt_ele_release_trdc(uint32_t resource)
+{
+  uint32_t request[2];
+  uint32_t response[4];
+
+  request[0] = IMXRT_ELE_RELEASE_RDC;
+  request[1] = (resource << 8) | IMXRT_ELE_CORE_CM33_ID;
+  return imxrt_ele_command(request, 2, IMXRT_ELE_RELEASE_RDC_RESPONSE,
+                           response);
+}
+
+static int imxrt_ele_prepare_clocks(void)
+{
+  uint32_t request[1];
+  uint32_t response[4];
+  int ret;
+
+  request[0] = IMXRT_ELE_GET_FW_STATUS;
+  ret = imxrt_ele_command(request, 1, IMXRT_ELE_GET_FW_STATUS_RESPONSE,
+                          response);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_ELE_READY;
+
+  ret = imxrt_ele_release_trdc(IMXRT_ELE_TRDC_AON_ID);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_TRDC_AON;
+
+  /* MEGA must be transferred before WAKEUP because WAKEUP controls access
+   * to the MEGA TRDC.
+   */
+
+  ret = imxrt_ele_release_trdc(IMXRT_ELE_TRDC_MEGA_ID);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_TRDC_MEGA;
+
+  ret = imxrt_ele_release_trdc(IMXRT_ELE_TRDC_WAKEUP_ID);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_TRDC_WAKEUP;
+  return OK;
+}
+
+static void imxrt_delay_cycles(unsigned int cycles)
+{
+  volatile unsigned int count;
+
+  for (count = cycles; count > 0; count--)
+    {
+      __asm__ __volatile__("nop");
+    }
+}
+
+static void imxrt_clock_failure(int error) noreturn_function;
+static void imxrt_clock_failure(int error)
+{
+  g_imxrt118x_clock_error = error;
+
+  /* A running kernel would use the 240 MHz board timing constants.  Do not
+   * continue at RC24M with incorrect scheduler and peripheral timing.
+   */
+
+  for (; ; )
+    {
+      __asm__ __volatile__("nop");
+    }
+}
+
+static int imxrt_syspll3_initialize(void)
+{
+  uint32_t reg;
+  unsigned int timeout;
+
+  reg = PHY_LDO_OUTPUT_TARGET(0x10) | PHY_LDO_ENABLE |
+        PHY_LDO_CURRENT_LIMIT_ENABLE;
+  putreg32(reg, IMXRT_PHY_LDO_CTRL0);
+  imxrt_delay_cycles(64);
+  modifyreg32(IMXRT_PHY_LDO_CTRL0, PHY_LDO_CURRENT_LIMIT_ENABLE, 0);
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_PLL_LDO;
+
+  reg = getreg32(IMXRT_ANADIG_PLL_SYS3_CTRL);
+  if ((reg & PLL_SYS3_POWERUP) == 0)
+    {
+      putreg32(PLL_SYS3_REG_ENABLE | PLL_SYS3_GATE,
+               IMXRT_ANADIG_PLL_SYS3_CTRL);
+      imxrt_delay_cycles(1024);
+
+      reg = PLL_SYS3_REG_ENABLE | PLL_SYS3_GATE | PLL_SYS3_POWERUP |
+            PLL_SYS3_HOLD_RING_OFF;
+      putreg32(reg, IMXRT_ANADIG_PLL_SYS3_CTRL);
+      imxrt_delay_cycles(1024);
+
+      reg &= ~PLL_SYS3_HOLD_RING_OFF;
+      putreg32(reg, IMXRT_ANADIG_PLL_SYS3_CTRL);
+    }
+
+  for (timeout = IMXRT118X_PLL_TIMEOUT; timeout > 0; timeout--)
+    {
+      if ((getreg32(IMXRT_ANADIG_PLL_SYS3_CTRL) & PLL_SYS3_STABLE) != 0)
+        {
+          modifyreg32(IMXRT_ANADIG_PLL_SYS3_CTRL, PLL_SYS3_GATE,
+                      PLL_SYS3_ENABLE | PLL_SYS3_DIV2_ENABLE);
+          g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_SYS_PLL3;
+          return OK;
+        }
+    }
+
+  return -ETIMEDOUT;
+}
 
 #define SOURCES_COMMON(a, b) \
   {IMXRT_CLK_OSC_RC24M, IMXRT_CLK_OSC_RC400M, (a), (b)}
@@ -427,13 +627,31 @@ void imxrt_clockgate_configure(unsigned int gate, bool enable)
 
 void imxrt_clockconfig(void)
 {
-  /* Keep the early console on RC24M until NuttX owns the ELE/TRDC policy.
-   * The general root and frequency APIs support all PLL-derived selections,
-   * but inferring PLL ownership from status bits alone is not sufficient:
-   * debugger handoff can leave a nominally stable PLL at a rate that differs
-   * from the board's boot contract.
-   */
+  int ret;
 
+  g_imxrt118x_clock_status = 0;
+  g_imxrt118x_clock_error = OK;
   imxrt_clockroot_configure(CCM_CR_LPUART0102, 0, 1, true);
   imxrt_clockgate_configure(CCM_CCGR_LPUART1, true);
+
+  ret = imxrt_ele_prepare_clocks();
+  if (ret < 0)
+    {
+      imxrt_clock_failure(ret);
+    }
+
+  ret = imxrt_syspll3_initialize();
+  if (ret < 0)
+    {
+      imxrt_clock_failure(ret);
+    }
+
+  /* SYS_PLL3 is a fixed 480 MHz source.  Keep LPUART at 24 MHz and run the
+   * Cortex-M33 at 240 MHz, matching the NXP RT118x reference clock tree.
+   */
+
+  imxrt_clockroot_configure(CCM_CR_LPUART0102, 2, 10, true);
+  imxrt_clockroot_configure(CCM_CR_M33, 2, 2, true);
+
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_ROOTS_CONFIGURED;
 }
