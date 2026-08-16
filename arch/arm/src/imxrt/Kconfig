@@ -434,10 +434,9 @@ config IMXRT_NETC
 	select ARCH_HAVE_PHY
 	select ARCH_HAVE_NETDEV_STATISTICS
 	---help---
-		Enable the RT118x NETC bring-up path.  The initial FRDM-IMXRT1186
-		implementation proves external Clause 22 MDIO access to the YT8531
-		PHYs on switch ports 0 and 2.  ENETC1, switch management, packet DMA,
-		and MSI-X support are not yet implemented.
+		Enable the RT118x NETC switch Ethernet path.  The FRDM-IMXRT1186
+		implementation supports the YT8531 RGMII PHYs on switch ports 0
+		and 2 and uses internal port 4 with ENETC1 SI0 for packet DMA.
 
 if IMXRT_NETC
 
@@ -476,6 +475,16 @@ config IMXRT_NETC_MDIO_TIMEOUT_US
 	int "MDIO/reset polling timeout (microseconds)"
 	range 100 1000000
 	default 100000
+
+config IMXRT_NETC_LINK_TIMEOUT_MS
+	int "PHY link negotiation timeout (milliseconds)"
+	range 0 60000
+	default 10000
+	---help---
+		Maximum time for interface bring-up to wait for either external
+		switch PHY to complete autonegotiation.  This keeps one-shot
+		network initialization from starting DHCP before speed and duplex
+		are valid.  Zero disables the wait.
 
 endif # IMXRT_NETC
 

@@ -4,7 +4,8 @@ NXP FRDM-IMXRT1186
 
 This board support package targets the Cortex-M33 in the MIMXRT1186
 12 x 12 mm, 196-pin BGA package.  It supports debugger-loaded images and
-Boot ROM execute-in-place (XIP) images for the on-board QSPI NOR flash.
+contains the initial execute-in-place (XIP) image layout for the on-board
+QSPI NOR flash.
 
 Supported features
 ==================
@@ -20,7 +21,7 @@ Supported features
 * NETC switch Ethernet through the ENETC1 management station interface
 * YT8531 RGMII PHY discovery, delay configuration, and link negotiation
 * DHCP client and ICMP networking
-* FlexSPI2 NOR Boot ROM container and XIP from the on-board W25Q128 flash
+* FlexSPI2 NOR Boot ROM container and XIP image layout for the W25Q128 flash
 * NSH
 
 This board is distinct from the MIMXRT1180-EVK, which uses MIMXRT1189 silicon
@@ -49,11 +50,11 @@ Configurations
   storage are placed in secure OCRAM beginning at ``0x20480000``.
 
 ``netnsh-xip``
-  Networking image packaged for Boot ROM startup from the on-board 16 MiB
-  W25Q128 QSPI NOR connected to FlexSPI2.  The raw ``nuttx.bin`` starts at
-  flash offset zero and contains the FlexSPI configuration block, image
-  container, and executable image.  Code executes from ``0x14000000`` while
-  writable data remains in OCRAM.
+  Networking image laid out for the on-board 16 MiB W25Q128 QSPI NOR
+  connected to FlexSPI2.  The raw ``nuttx.bin`` starts at flash offset zero
+  and contains the FlexSPI configuration block, image container, and
+  executable image.  Code executes from ``0x14000000`` while writable data
+  remains in OCRAM when the image is started through the debugger.
 
 Ethernet
 ========
@@ -72,13 +73,11 @@ alignment.  ENETC1 management SI0 reserves ring 0 for management traffic; the
 port-masquerade transmit path uses ring 1.  Port 4 is a pseudo MAC and must not
 be accessed through the external Ethernet MAC register layout.
 
-The PHY may still be negotiating when the one-shot NSH network initialization
-runs after a cold power-on reset.  If ``eth0`` remains down, run::
-
-  ifup eth0
-
-The interface then uses DHCP.  This startup ordering limitation does not affect
-the NETC data path after link-up.
+Interface bring-up waits for either external PHY to complete autonegotiation
+before allowing the one-shot network initialization to start DHCP.  The
+default timeout is 10 seconds and can be changed with
+``CONFIG_IMXRT_NETC_LINK_TIMEOUT_MS``.  Setting the timeout to zero restores
+non-blocking link detection.
 
 Building
 ========
@@ -95,6 +94,12 @@ Configure and build the Boot ROM XIP image with::
 
 The XIP configuration produces ``nuttx.bin`` for programming at FlexSPI2 flash
 offset zero, as well as ``nuttx.hex``.
+
+True power-on startup of the current NuttX XIP image is not yet working: the
+MIMXRT1186 Boot ROM remains at approximately ``0x100157f4`` despite valid
+FlexSPI configuration, container, and vector data in flash.  Debugger-started
+XIP operation is functional.  This Boot ROM handoff issue is independent of
+the Ethernet and DHCP startup sequence.
 
 Applications that run for 24 hours or longer must provide the periodic ELE
 active-timer ping required by the RT1180 security reference manual.

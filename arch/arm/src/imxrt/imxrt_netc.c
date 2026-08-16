@@ -41,6 +41,7 @@
 #include <nuttx/compiler.h>
 #include <nuttx/net/ip.h>
 #include <nuttx/net/netdev.h>
+#include <nuttx/signal.h>
 #include <nuttx/wdog.h>
 #include <nuttx/wqueue.h>
 
@@ -89,6 +90,7 @@
 #define NETC_DMA_ALIGNMENT              32u
 #define NETC_DMA_BUFFER_SIZE            1536u
 #define NETC_POLL_DELAY                 MSEC2TICK(10)
+#define NETC_LINK_POLL_INTERVAL_MS      100u
 
 #define NETC_RX_READY                   (1ull << 62)
 #define NETC_RX_FINAL                   (1ull << 63)
@@ -1076,6 +1078,48 @@ static void imxrt_netc_poll_expiry(wdparm_t arg)
   work_queue(ETHWORK, &priv->pollwork, imxrt_netc_poll_work, priv, 0);
 }
 
+static int imxrt_netc_wait_link(struct imxrt_netc_link_s *port0,
+                                struct imxrt_netc_link_s *port2,
+                                int *port0_ret, int *port2_ret)
+{
+  unsigned int elapsed = 0;
+  unsigned int delay;
+  int ret;
+
+  for (; ; )
+    {
+      *port0_ret =
+        imxrt_netc_phy_link(CONFIG_IMXRT_NETC_PORT0_PHY_ADDRESS, port0);
+      *port2_ret =
+        imxrt_netc_phy_link(CONFIG_IMXRT_NETC_PORT2_PHY_ADDRESS, port2);
+
+      if ((*port0_ret == OK && port0->up) ||
+          (*port2_ret == OK && port2->up))
+        {
+          return OK;
+        }
+
+      if (elapsed >= CONFIG_IMXRT_NETC_LINK_TIMEOUT_MS)
+        {
+          return -ETIMEDOUT;
+        }
+
+      delay = CONFIG_IMXRT_NETC_LINK_TIMEOUT_MS - elapsed;
+      if (delay > NETC_LINK_POLL_INTERVAL_MS)
+        {
+          delay = NETC_LINK_POLL_INTERVAL_MS;
+        }
+
+      ret = nxsig_usleep(delay * 1000u);
+      if (ret < 0)
+        {
+          return ret;
+        }
+
+      elapsed += delay;
+    }
+}
+
 static int imxrt_netc_ifup(struct net_driver_s *dev)
 {
   struct imxrt_netc_driver_s *priv = dev->d_private;
@@ -1087,10 +1131,7 @@ static int imxrt_netc_ifup(struct net_driver_s *dev)
 
   memset(&port0, 0, sizeof(port0));
   memset(&port2, 0, sizeof(port2));
-  port0_ret = imxrt_netc_phy_link(CONFIG_IMXRT_NETC_PORT0_PHY_ADDRESS,
-                                  &port0);
-  port2_ret = imxrt_netc_phy_link(CONFIG_IMXRT_NETC_PORT2_PHY_ADDRESS,
-                                  &port2);
+  ret = imxrt_netc_wait_link(&port0, &port2, &port0_ret, &port2_ret);
 
   ninfo("NETC: switch port 0 PHY %u link=%s status=%d speed=%u "
         "duplex=%s\n", CONFIG_IMXRT_NETC_PORT0_PHY_ADDRESS,
@@ -1101,10 +1142,11 @@ static int imxrt_netc_ifup(struct net_driver_s *dev)
         port2_ret == OK && port2.up ? "up" : "down", port2_ret,
         port2.speed, port2.full_duplex ? "full" : "half");
 
-  if (port0_ret < 0 && port2_ret < 0)
+  if (ret < 0)
     {
-      return port0_ret == -EAGAIN || port2_ret == -EAGAIN ?
-             -EAGAIN : port0_ret;
+      nerr("NETC: no negotiated PHY link after %u ms: %d\n",
+           CONFIG_IMXRT_NETC_LINK_TIMEOUT_MS, ret);
+      return ret;
     }
 
   ret = imxrt_netc_switch_initialize(priv, &port0, &port2);
