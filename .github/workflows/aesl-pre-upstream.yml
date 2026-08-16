@@ -164,13 +164,14 @@ jobs:
           "$python_bin" -m venv "$RUNNER_TEMP/nuttx-check-venv"
           source "$RUNNER_TEMP/nuttx-check-venv/bin/activate"
           pip install codespell cmake-format black isort flake8 cvt2utf
+          echo "::add-matcher::$GITHUB_WORKSPACE/sources/nuttx/.github/nxstyle.json"
           cd sources/nuttx
           merge_base=$(git merge-base "apache/$BASE_REF" HEAD)
           echo "Checking ${merge_base}..HEAD"
           # Commit sign-off is reported separately above as a warn-only gate
           # for this fork preflight. Apache still requires human sign-off
           # before any upstream write.
-          tools/checkpatch.sh -c -u -g "${merge_base}..HEAD"
+          tools/checkpatch.sh -c -u -m -g "${merge_base}..HEAD"
 
       - name: Build requested RT118x configurations with CMake
         shell: bash
