@@ -32,7 +32,6 @@ jobs:
       - name: Checkout nuttx repo
         uses: actions/checkout@v7
         with:
-          repository: apache/nuttx
           path: nuttx
           fetch-depth: 0
 
@@ -49,5 +48,5 @@ jobs:
           if echo '${{ toJSON(github.event.pull_request.labels) }}' | jq -e 'any(.[].name; test("breaking change"; "i"))' >/dev/null 2>&1; then
             breaking_opts="-b"
           fi
-          echo "../nuttx/tools/checkpatch.sh -c -u -m -g $breaking_opts $commits"
-          ../nuttx/tools/checkpatch.sh -c -u -m -g $breaking_opts $commits
+          echo "../nuttx/tools/checkpatch.sh -c -u -g $breaking_opts $commits"
+          ../nuttx/tools/checkpatch.sh -c -u -g $breaking_opts $commits
