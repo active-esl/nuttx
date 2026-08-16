@@ -197,8 +197,7 @@ void __start(void)
                    "r"(CONFIG_IDLETHREAD_STACKSIZE - 64) :);
 #endif
 
-#if (defined(CONFIG_BOOT_RUNFROMISRAM) || defined(CONFIG_IMXRT_INIT_FLEXRAM)) && \
-    !defined(CONFIG_ARCH_FAMILY_IMXRT118x)
+#if defined(CONFIG_BOOT_RUNFROMISRAM) || defined(CONFIG_IMXRT_INIT_FLEXRAM)
     imxrt_ocram_initialize();
 #endif
 
@@ -249,18 +248,6 @@ void __start(void)
 #endif
 
   /* Configure the UART so that we can get debug output as soon as possible */
-
-#ifdef CONFIG_ARCH_FAMILY_IMXRT118x
-  /* The LinkServer/ROM FlexRAM handoff can restore a secure MSP limit after
-   * reset entry.  Clear the limits again after OCRAM initialization and
-   * immediately before the first nested early clock calls.
-   */
-
-  __asm__ volatile ("mov r0, #0\n\t"
-                    "msr msplim, r0\n\t"
-                    "msr psplim, r0\n\t"
-                    ::: "r0", "memory");
-#endif
 
   imxrt_clockconfig();
   arm_fpuconfig();

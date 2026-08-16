@@ -14,13 +14,16 @@ Supported features
 * SysTick
 * LPUART1 console on GPIO_AON_08 (TX) and GPIO_AON_09 (RX)
 * RT118x CCM register definitions for all clock roots and peripheral gates
-* Clock root and LPCG configuration API
+* RT118x PLL, oscillator, PMU, and GPC register definitions
+* Clock-root mux/divider, source-frequency, PLL/PFD-frequency, and LPCG APIs
 * NSH
 
 This board is distinct from the MIMXRT1180-EVK, which uses MIMXRT1189 silicon
 in a 289-pin package.  Board pinmux definitions are not interchangeable.
 
 The debugger-load configuration keeps the Cortex-M33 and LPUART1 on the
-always-available 24 MHz RC oscillator.  PLL initialization and PLL-derived
-root-frequency reporting require ELE/TRDC integration and are not yet enabled.
-The port also does not yet contain a ROM-bootable FlexSPI image.
+always-available 24 MHz RC oscillator.  The clock driver can report and select
+all documented PLL-derived root inputs when the relevant PLL is already
+running.  It does not initialize or retune PLLs during early boot because
+NuttX does not yet own the required ELE/TRDC and PMU policy.  The port also
+does not yet contain a ROM-bootable FlexSPI image.

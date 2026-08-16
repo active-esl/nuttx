@@ -427,28 +427,13 @@ void imxrt_clockgate_configure(unsigned int gate, bool enable)
 
 void imxrt_clockconfig(void)
 {
-  uint32_t ctrl;
-  unsigned int divider = 1;
-  unsigned int mux = 0;
-
-  /* Preserve PLL ownership established by the boot firmware/ELE.  When the
-   * 480 MHz system PLL is already valid, use its divided output for a
-   * 24 MHz LPUART root.  Otherwise retain the always-available RC24M path.
-   * This gives debugger-loaded images a PLL-capable path without attempting
-   * security-sensitive PLL or PMU writes before ELE/TRDC initialization.
+  /* Keep the early console on RC24M until NuttX owns the ELE/TRDC policy.
+   * The general root and frequency APIs support all PLL-derived selections,
+   * but inferring PLL ownership from status bits alone is not sufficient:
+   * debugger handoff can leave a nominally stable PLL at a rate that differs
+   * from the board's boot contract.
    */
 
-  ctrl = getreg32(IMXRT_ANADIG_PLL_SYS3_CTRL);
-  if ((ctrl & (PLL_SYS3_POWERUP | PLL_SYS3_ENABLE |
-               PLL_SYS3_DIV2_ENABLE | PLL_SYS3_STABLE |
-               PLL_SYS3_GATE | PLL_SYS3_BYPASS)) ==
-      (PLL_SYS3_POWERUP | PLL_SYS3_ENABLE |
-       PLL_SYS3_DIV2_ENABLE | PLL_SYS3_STABLE))
-    {
-      mux = 2;
-      divider = 10;
-    }
-
-  imxrt_clockroot_configure(CCM_CR_LPUART0102, mux, divider, true);
+  imxrt_clockroot_configure(CCM_CR_LPUART0102, 0, 1, true);
   imxrt_clockgate_configure(CCM_CCGR_LPUART1, true);
 }
