@@ -21,6 +21,7 @@ Supported features
 * NETC switch Ethernet through the ENETC1 management station interface
 * YT8531 RGMII PHY discovery, delay configuration, and link negotiation
 * DHCP client and ICMP networking
+* USB OTG1 CDC/ACM NSH console on the J63 Type-C connector
 * FlexSPI2 NOR Boot ROM container and XIP image layout for the W25Q128 flash
 * NSH
 
@@ -56,6 +57,11 @@ Configurations
   executable image.  Code executes from ``0x14000000`` while writable data
   remains in OCRAM when the image is started through the debugger.
 
+``usbnsh``
+  Debugger-loaded CDC/ACM console image for USB OTG1 on J63.  Open the NuttX
+  CDC ACM tty on the host and send three carriage returns to start NSH.  J23
+  is the MCU-Link connector and is not the target USB device port.
+
 Ethernet
 ========
 
@@ -90,6 +96,11 @@ Configure and build the debugger-loaded networking image with::
 Configure and build the Boot ROM XIP image with::
 
   tools/configure.sh frdm-imxrt1186:netnsh-xip
+  make
+
+Configure and build the debugger-loaded USB console image with::
+
+  tools/configure.sh frdm-imxrt1186:usbnsh
   make
 
 The XIP configuration produces ``nuttx.bin`` for programming at FlexSPI2 flash
