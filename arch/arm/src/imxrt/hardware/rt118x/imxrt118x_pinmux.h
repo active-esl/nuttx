@@ -34,7 +34,7 @@
  ****************************************************************************/
 
 /* The low 16 bits carry a small RT1180-specific pin identifier consumed by
- * imxrt118x_gpio.c.  Both EVK console pins use mux mode ALT0.
+ * imxrt118x_gpio.c.  Both FRDM LPUART1 console pins use mux mode ALT0.
  */
 
 #define IMXRT_PADMUX_GPIO_AON_08_INDEX  8
