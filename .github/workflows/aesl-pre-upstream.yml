@@ -18,6 +18,7 @@ name: Active ESL pre-upstream
 on:
   push:
     branches:
+      # Keep legacy EVK contributions alongside current FRDM work.
       - "feat/mimxrt1180-*"
       - "feat/frdm-*"
   pull_request:
