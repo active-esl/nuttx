@@ -1,0 +1,11 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+if ARCH_BOARD_FRDM_IMXRT1186
+
+config FRDM_IMXRT1186_DTCM
+	bool
+	default y
+
+endif
