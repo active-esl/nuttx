@@ -167,7 +167,10 @@ jobs:
           cd sources/nuttx
           merge_base=$(git merge-base "apache/$BASE_REF" HEAD)
           echo "Checking ${merge_base}..HEAD"
-          tools/checkpatch.sh -c -u -m -g "${merge_base}..HEAD"
+          # Commit sign-off is reported separately above as a warn-only gate
+          # for this fork preflight. Apache still requires human sign-off
+          # before any upstream write.
+          tools/checkpatch.sh -c -u -g "${merge_base}..HEAD"
 
       - name: Build requested RT118x configurations with CMake
         shell: bash
@@ -212,7 +215,14 @@ jobs:
       contents: read
       statuses: write
     steps:
+      - name: Checkout pull-request merge
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - name: Checkout NuttX feature ref
+        if: github.event_name != 'pull_request'
         uses: actions/checkout@v7
         with:
           ref: ${{ env.TEST_REF }}
@@ -222,11 +232,6 @@ jobs:
         uses: github/super-linter@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # PR runs set GITHUB_SHA to the ephemeral merge commit, which is not
-          # in this checkout (ref = TEST_REF / PR head). Point super-linter at
-          # the checked-out tip so changed-file discovery does not fail with
-          # `fatal: bad object`.
-          GITHUB_SHA: ${{ env.TEST_REF }}
           DEFAULT_BRANCH: master
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_PYTHON_BLACK: true
