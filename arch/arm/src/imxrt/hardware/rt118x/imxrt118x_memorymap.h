@@ -36,7 +36,7 @@
 #define IMXRT_OCRAM_BASE            0x30480000u
 #define IMXRT_OCRAM2_BASE           IMXRT_OCRAM_BASE
 #define IMXRT_FLEXSPI1_BASE         0x28000000u
-#define IMXRT_FLEXSPI2_BASE         0x38000000u
+#define IMXRT_FLEXSPI2_BASE         0x04000000u
 
 /* Non-secure peripheral aliases used by this initial NuttX port. */
 

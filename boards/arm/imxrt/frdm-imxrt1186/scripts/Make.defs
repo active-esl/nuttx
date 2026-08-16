@@ -8,7 +8,12 @@ include $(TOPDIR)/.config
 include $(TOPDIR)/tools/Config.mk
 include $(TOPDIR)/arch/arm/src/armv8-m/Toolchain.defs
 
-LDSCRIPT = dtcm.ld
+ifeq ($(CONFIG_FRDM_IMXRT1186_XIP),y)
+  LDSCRIPT = xip.ld
+else
+  LDSCRIPT = dtcm.ld
+endif
+
 ARCHSCRIPT += $(BOARD_DIR)$(DELIM)scripts$(DELIM)$(LDSCRIPT)
 
 CFLAGS := $(ARCHCFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS) -pipe

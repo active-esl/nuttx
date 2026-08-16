@@ -2610,6 +2610,10 @@ config IMXRT_BOOT_OCRAM
 	bool "Running from internal OCRAM"
 	depends on BOOT_RUNFROMISRAM
 
+config IMXRT_BOOT_FLEXSPI
+	bool "Running from FlexSPI flash"
+	depends on BOOT_RUNFROMFLASH && ARCH_FAMILY_IMXRT118x
+
 config IMXRT_BOOT_SDRAM
 	bool "Running from external SDRAM"
 	depends on BOOT_RUNFROMSDRAM
