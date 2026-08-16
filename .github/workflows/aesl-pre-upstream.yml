@@ -195,8 +195,9 @@ jobs:
           for config in "${configs[@]}"; do
             [[ "$config" =~ ^[[:alnum:]_.-]+:[[:alnum:]_./-]+$ ]]
           done
+          printf '%s\n' "${configs[@]}" > "$RUNNER_TEMP/aesl-rt118x.dat"
           cd sources/nuttx/tools/ci
-          ./cibuild.sh -A -N -R -S "${configs[@]}"
+          ./cibuild.sh -c -A -N -R -S "$RUNNER_TEMP/aesl-rt118x.dat"
 
   lint:
     name: Apache Lint
