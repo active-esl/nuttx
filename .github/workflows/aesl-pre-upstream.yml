@@ -18,7 +18,9 @@ name: Active ESL pre-upstream
 on:
   push:
     branches:
+      # Keep legacy EVK contributions alongside current FRDM work.
       - "feat/mimxrt1180-*"
+      - "feat/frdm-*"
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -28,7 +30,7 @@ on:
       ref:
         description: Fork branch, tag, or SHA to test
         required: true
-        default: feat/mimxrt1180-evk-cm33-nsh
+        default: feat/frdm-imxrt1186-cm33-nsh
         type: string
       base_ref:
         description: Apache base branch used for the contribution range
@@ -38,7 +40,7 @@ on:
       board_config:
         description: Direct board configuration to build
         required: true
-        default: imxrt1180-evk:nsh
+        default: frdm-imxrt1186:nsh
         type: string
       run_docs:
         description: Reproduce the Apache documentation build
@@ -56,15 +58,16 @@ concurrency:
 env:
   TEST_REF: ${{ github.event.pull_request.head.sha || inputs.ref || github.sha }}
   BASE_REF: ${{ inputs.base_ref || 'master' }}
-  BOARD_CONFIG: ${{ inputs.board_config || 'imxrt1180-evk:nsh' }}
+  BOARD_CONFIG: ${{ inputs.board_config || 'frdm-imxrt1186:nsh' }}
 
 jobs:
   check-build:
-    name: Check and RT1180 build
+    name: Check and RT118x build
     if: >-
       github.event_name != 'pull_request' ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
-       startsWith(github.head_ref, 'feat/mimxrt1180-'))
+       (startsWith(github.head_ref, 'feat/mimxrt1180-') ||
+        startsWith(github.head_ref, 'feat/frdm-')))
     runs-on: [self-hosted, Linux, X64, aesl, esl-proxmox]
     timeout-minutes: 90
     container:
@@ -166,7 +169,7 @@ jobs:
           echo "Checking ${merge_base}..HEAD"
           tools/checkpatch.sh -c -u -g "${merge_base}..HEAD"
 
-      - name: Build requested RT1180 configuration
+      - name: Build requested RT118x configuration
         shell: bash
         run: |
           set -euo pipefail
@@ -181,7 +184,8 @@ jobs:
     if: >-
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.head.repo.full_name == github.repository &&
-        startsWith(github.head_ref, 'feat/mimxrt1180-'))) &&
+        (startsWith(github.head_ref, 'feat/mimxrt1180-') ||
+         startsWith(github.head_ref, 'feat/frdm-')))) &&
       (github.event_name != 'workflow_dispatch' || inputs.run_docs)
     runs-on: [self-hosted, Linux, X64, aesl, esl-proxmox]
     timeout-minutes: 45
