@@ -14,11 +14,19 @@
 #ifndef __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_PLL_H
 #define __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_PLL_H
 
+/****************************************************************************
+ * Included Files
+ ****************************************************************************/
+
 #include <nuttx/config.h>
 
 #include <stdint.h>
 
 #include "hardware/imxrt_memorymap.h"
+
+/****************************************************************************
+ * Pre-processor Definitions
+ ****************************************************************************/
 
 /* ANADIG PLL registers */
 
