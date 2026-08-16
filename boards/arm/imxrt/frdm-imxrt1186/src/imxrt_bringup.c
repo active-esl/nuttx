@@ -26,8 +26,11 @@
 
 #include <nuttx/config.h>
 
+#include <syslog.h>
+
 #include <nuttx/board.h>
 #include <nuttx/debug.h>
+#include <nuttx/fs/fs.h>
 
 #ifdef CONFIG_IMXRT_NETC
 #  include "imxrt_netc.h"
@@ -47,9 +50,19 @@
 
 int imxrt_bringup(void)
 {
-#ifdef CONFIG_IMXRT_NETC
+#if defined(CONFIG_FS_PROCFS) || defined(CONFIG_IMXRT_NETC)
   int ret;
+#endif
 
+#ifdef CONFIG_FS_PROCFS
+  ret = nx_mount(NULL, "/proc", "procfs", 0, NULL);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: Failed to mount procfs at /proc: %d\n", ret);
+    }
+#endif
+
+#ifdef CONFIG_IMXRT_NETC
   ret = imxrt_netc_initialize();
   if (ret < 0)
     {
