@@ -32,9 +32,11 @@
 
 #include <arch/barriers.h>
 #include <arch/board/board.h>
+#include <nuttx/arch.h>
 
 #include "arm_internal.h"
 #include "hardware/imxrt_ccm.h"
+#include "hardware/imxrt_memorymap.h"
 #include "hardware/rt118x/imxrt118x_ele.h"
 #include "hardware/rt118x/imxrt118x_osc.h"
 #include "hardware/rt118x/imxrt118x_pll.h"
@@ -53,6 +55,12 @@
 #define IMXRT118X_SYSPLL3_FREQUENCY     480000000u
 #define IMXRT118X_ELE_TIMEOUT           1000000u
 #define IMXRT118X_PLL_TIMEOUT           1000000u
+#define IMXRT118X_SYSPLL1_DIV           41u
+#define IMXRT118X_SYSPLL1_NUMERATOR     178956970u
+#define IMXRT118X_SYSPLL1_DENOMINATOR   0x0fffffffu
+#define IMXRT118X_SYSPLL3_PFD3_FRAC     18u
+#define IMXRT118X_PLL_REG_DELAY_US      100u
+#define IMXRT118X_PLL_HOLD_DELAY_US     225u
 
 /****************************************************************************
  * Public Data
@@ -616,6 +624,135 @@ void imxrt_clockgate_configure(unsigned int gate, bool enable)
 
   (void)getreg32(IMXRT_CCM_LPCG_DIR(gate));
 }
+
+#ifdef CONFIG_IMXRT_NETC
+/* SYS_PLL1 (Ethernet PLL) + NETC/MAC roots matching Zephyr FRDM RT1186. */
+
+static int imxrt_syspll1_initialize(void)
+{
+  uintptr_t base = IMXRT_ETHERNET_PLL_BASE;
+  unsigned int timeout;
+  uint32_t ctrl;
+
+  if (imxrt_pll_frequency(IMXRT_PLL_SYS1) != 0)
+    {
+      g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_SYS_PLL1;
+      return OK;
+    }
+
+  /* Bypass while programming the fractional bank. */
+
+  putreg32(PLL_CTRL_BYPASS, IMXRT_PLL_CTRL_SET(base));
+  modifyreg32(IMXRT_ANADIG_PLL_SYS1_CTRL, 0, PLL_SYS1_ENABLE);
+
+  putreg32(IMXRT118X_SYSPLL1_NUMERATOR, IMXRT_PLL_NUM(base));
+  putreg32(IMXRT118X_SYSPLL1_DENOMINATOR, IMXRT_PLL_DENOM(base));
+  putreg32(PLL_CTRL_DIV_MASK, IMXRT_PLL_CTRL_CLR(base));
+  putreg32(IMXRT118X_SYSPLL1_DIV & PLL_CTRL_DIV_MASK,
+           IMXRT_PLL_CTRL_SET(base));
+  putreg32(PLL_CTRL_REG_ENABLE, IMXRT_PLL_CTRL_SET(base));
+  up_udelay(IMXRT118X_PLL_REG_DELAY_US);
+
+  putreg32(PLL_CTRL_POWERUP | PLL_CTRL_HOLD_RING_OFF,
+           IMXRT_PLL_CTRL_SET(base));
+  up_udelay(IMXRT118X_PLL_HOLD_DELAY_US);
+  putreg32(PLL_CTRL_HOLD_RING_OFF, IMXRT_PLL_CTRL_CLR(base));
+
+  for (timeout = IMXRT118X_PLL_TIMEOUT; timeout > 0; timeout--)
+    {
+      ctrl = getreg32(IMXRT_ANADIG_PLL_SYS1_CTRL);
+      if ((ctrl & PLL_SYS1_STABLE) != 0)
+        {
+          putreg32(PLL_CTRL_ENABLE, IMXRT_PLL_CTRL_SET(base));
+          modifyreg32(IMXRT_ANADIG_PLL_SYS1_CTRL, PLL_SYS1_GATE,
+                      PLL_SYS1_DIV2_ENABLE | PLL_SYS1_DIV5_ENABLE);
+          putreg32(PLL_CTRL_BYPASS, IMXRT_PLL_CTRL_CLR(base));
+          g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_SYS_PLL1;
+          return OK;
+        }
+    }
+
+  return -ETIMEDOUT;
+}
+
+static int imxrt_syspll3_pfd3_initialize(void)
+{
+  uint32_t pfd;
+  uint32_t stable;
+  unsigned int timeout;
+  unsigned int shift = PLL_PFD_FRAC_SHIFT(3);
+
+  pfd = getreg32(IMXRT_ANADIG_PLL_SYS3_PFD);
+  if (((pfd >> shift) & 0x3fu) == IMXRT118X_SYSPLL3_PFD3_FRAC &&
+      (pfd & PLL_PFD_GATE(3)) == 0)
+    {
+      return OK;
+    }
+
+  stable = pfd & PLL_PFD_STABLE(3);
+  pfd |= PLL_PFD_GATE(3);
+  putreg32(pfd, IMXRT_ANADIG_PLL_SYS3_PFD);
+
+  pfd &= ~PLL_PFD_FRAC_MASK(3);
+  pfd |= PLL_PFD_FRAC(3, IMXRT118X_SYSPLL3_PFD3_FRAC);
+  putreg32(pfd, IMXRT_ANADIG_PLL_SYS3_PFD);
+
+  putreg32(getreg32(IMXRT_ANADIG_PLL_SYS3_UPDATE) ^ PLL_PFD_UPDATE(3),
+           IMXRT_ANADIG_PLL_SYS3_UPDATE);
+
+  pfd = getreg32(IMXRT_ANADIG_PLL_SYS3_PFD);
+  pfd &= ~PLL_PFD_GATE(3);
+  putreg32(pfd, IMXRT_ANADIG_PLL_SYS3_PFD);
+
+  for (timeout = IMXRT118X_PLL_TIMEOUT; timeout > 0; timeout--)
+    {
+      if ((getreg32(IMXRT_ANADIG_PLL_SYS3_PFD) & PLL_PFD_STABLE(3)) !=
+          stable)
+        {
+          return OK;
+        }
+    }
+
+  return -ETIMEDOUT;
+}
+
+int imxrt_netc_clocks_configure(void)
+{
+  int ret;
+
+  if ((g_imxrt118x_clock_status & IMXRT_CLOCK_STATUS_NETC) != 0)
+    {
+      return OK;
+    }
+
+  ret = imxrt_syspll1_initialize();
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  ret = imxrt_syspll3_pfd3_initialize();
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  /* Zephyr SoC: NETC = SYS_PLL3_PFD3 / 2 (= 240 MHz). */
+
+  imxrt_clockroot_configure(CCM_CR_NETC, 2, 2, true);
+
+  /* Zephyr FRDM: MAC0 RGMII 1G needs 125 MHz (SYS_PLL1_DIV2 / 4).
+   * MAC2 uses the same source with /4 for switch port 2.
+   */
+
+  imxrt_clockroot_configure(CCM_CR_MAC0, 2, 4, true);
+  imxrt_clockroot_configure(CCM_CR_MAC2, 2, 4, true);
+  imxrt_clockgate_configure(CCM_CCGR_NETC, true);
+
+  g_imxrt118x_clock_status |= IMXRT_CLOCK_STATUS_NETC;
+  return OK;
+}
+#endif /* CONFIG_IMXRT_NETC */
 
 /****************************************************************************
  * Name: imxrt_clockconfig

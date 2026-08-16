@@ -443,11 +443,10 @@ if IMXRT_NETC
 
 config IMXRT_NETC_CLOCK_FREQUENCY
 	int "NETC root clock frequency"
-	default 333333333
+	default 240000000
 	---help---
 		Frequency in Hz of the programmed NETC root used to derive MDC.
-		The board clock and access-control setup must make this true before
-		the driver is initialized.
+		Matches Zephyr FRDM: SYS_PLL3_PFD3 (frac 18) / 2 = 240 MHz.
 
 config IMXRT_NETC_PORT0_PHY_ADDRESS
 	int "FRDM switch port 0 PHY address"
@@ -458,6 +457,20 @@ config IMXRT_NETC_PORT2_PHY_ADDRESS
 	int "FRDM switch port 2 PHY address"
 	range 0 31
 	default 4
+
+config IMXRT_NETC_YT8531_RX_DELAY
+	int "YT8531 RGMII RX delay select (0-15)"
+	range 0 15
+	default 13
+	---help---
+		Matches Zephyr FRDM motorcomm,rx-delay-sel.
+
+config IMXRT_NETC_YT8531_TX_DELAY
+	int "YT8531 RGMII TX delay select (0-15)"
+	range 0 15
+	default 13
+	---help---
+		Matches Zephyr FRDM motorcomm,tx-delay-sel.
 
 config IMXRT_NETC_MDIO_TIMEOUT_US
 	int "MDIO/reset polling timeout (microseconds)"
@@ -2649,6 +2662,10 @@ choice
 config IMXRT_BOOT_OCRAM
 	bool "Running from internal OCRAM"
 	depends on BOOT_RUNFROMISRAM
+
+config IMXRT_BOOT_FLEXSPI
+	bool "Running from FlexSPI flash"
+	depends on BOOT_RUNFROMFLASH && ARCH_FAMILY_IMXRT118x
 
 config IMXRT_BOOT_SDRAM
 	bool "Running from external SDRAM"

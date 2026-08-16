@@ -78,6 +78,8 @@ enum imxrt_pll_e
 #define IMXRT_CLOCK_STATUS_PLL_LDO          (1u << 4)
 #define IMXRT_CLOCK_STATUS_SYS_PLL3         (1u << 5)
 #define IMXRT_CLOCK_STATUS_ROOTS_CONFIGURED (1u << 6)
+#define IMXRT_CLOCK_STATUS_SYS_PLL1         (1u << 7)
+#define IMXRT_CLOCK_STATUS_NETC             (1u << 8)
 
 extern volatile uint32_t g_imxrt118x_clock_status;
 extern volatile int32_t g_imxrt118x_clock_error;
@@ -89,6 +91,9 @@ int imxrt_clockroot_frequency(unsigned int root, uint32_t *frequency);
 uint32_t imxrt_clocksource_frequency(enum imxrt_clock_source_e source);
 uint32_t imxrt_pll_frequency(enum imxrt_pll_e pll);
 void imxrt_clockgate_configure(unsigned int gate, bool enable);
+#ifdef CONFIG_IMXRT_NETC
+int imxrt_netc_clocks_configure(void);
+#endif
 #elif defined(CONFIG_IMXRT_CLOCKCONFIG_VER2)
 #include "imxrt_clockconfig_ver2.h"
 #else
