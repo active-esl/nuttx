@@ -1,5 +1,5 @@
 /****************************************************************************
- * boards/arm/imxrt/frdm-imxrt1186/src/imxrt_bringup.c
+ * arch/arm/src/imxrt/imxrt_netc.h
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -20,42 +20,23 @@
  *
  ****************************************************************************/
 
+#ifndef __ARCH_ARM_SRC_IMXRT_IMXRT_NETC_H
+#define __ARCH_ARM_SRC_IMXRT_IMXRT_NETC_H
+
 /****************************************************************************
  * Included Files
  ****************************************************************************/
 
 #include <nuttx/config.h>
 
-#include <nuttx/board.h>
-#include <nuttx/debug.h>
-
-#ifdef CONFIG_IMXRT_NETC
-#  include "imxrt_netc.h"
-#endif
+#include <stdint.h>
 
 /****************************************************************************
- * Public Functions
+ * Public Function Prototypes
  ****************************************************************************/
 
-/****************************************************************************
- * Name: imxrt_bringup
- *
- * Description:
- *   Bring up board features.
- *
- ****************************************************************************/
+int imxrt_netc_initialize(void);
+int imxrt_netc_mdio_read(uint8_t phyaddr, uint8_t regaddr,
+                         uint16_t *value);
 
-int imxrt_bringup(void)
-{
-#ifdef CONFIG_IMXRT_NETC
-  int ret;
-
-  ret = imxrt_netc_initialize();
-  if (ret < 0)
-    {
-      nerr("ERROR: NETC initialization failed: %d\n", ret);
-    }
-#endif
-
-  return 0;
-}
+#endif /* __ARCH_ARM_SRC_IMXRT_IMXRT_NETC_H */

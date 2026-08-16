@@ -7,4 +7,8 @@
 target_sources(board PRIVATE imxrt_boot.c imxrt_bringup.c imxrt_clockconfig.c
                              imxrt_gpio.c)
 
-set_property(GLOBAL PROPERTY LD_SCRIPT "${NUTTX_BOARD_DIR}/scripts/dtcm.ld")
+if(CONFIG_IMXRT_NETC)
+  set_property(GLOBAL PROPERTY LD_SCRIPT "${NUTTX_BOARD_DIR}/scripts/netc.ld")
+else()
+  set_property(GLOBAL PROPERTY LD_SCRIPT "${NUTTX_BOARD_DIR}/scripts/dtcm.ld")
+endif()
