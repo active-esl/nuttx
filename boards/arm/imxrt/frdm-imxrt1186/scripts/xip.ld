@@ -6,7 +6,12 @@
 
 MEMORY
 {
-  flash (rx)  : ORIGIN = 0x04000000, LENGTH = 16M
+  /* Secure FlexSPI2 AHB window — Boot ROM container load/entry must use
+   * 0x14xxxxxx (Zephyr/NXP FRDM-IMXRT1186). Non-secure alias 0x04xxxxxx
+   * maps the same flash but ROM handoff stays in Boot ROM if container
+   * points there.
+   */
+  flash (rx)  : ORIGIN = 0x14000000, LENGTH = 16M
   ocram (rwx) : ORIGIN = 0x20480000, LENGTH = 512K
 }
 
@@ -14,16 +19,17 @@ OUTPUT_ARCH(arm)
 EXTERN(_vectors)
 EXTERN(g_flash_config)
 EXTERN(g_boot_container)
+EXTERN(g_xmcd_data)
 ENTRY(_stext)
 
 SECTIONS
 {
-  /* RT1180 Boot ROM layout in the FlexSPI2 AHB window:
+  /* RT1180 Boot ROM layout in the FlexSPI2 secure AHB window:
    *
-   *   0x0400  FlexSPI configuration block
-   *   0x0800  XMCD (unused; NuttX uses internal OCRAM)
-   *   0x1000  AHAB-style container
-   *   0xb000  Cortex-M33 XIP image
+   *   0x14000400  FlexSPI configuration block
+   *   0x14000800  XMCD (HyperRAM option words for Boot ROM; match Zephyr)
+   *   0x14001000  AHAB-style container
+   *   0x1400b000  Cortex-M33 XIP image
    */
 
   .boot_hdr :
