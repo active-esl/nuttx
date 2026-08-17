@@ -1,0 +1,1088 @@
+/****************************************************************************
+ * arch/arm/src/imxrt/hardware/rt118x/imxrt118x_xbar.h
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.  The
+ * ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ ****************************************************************************/
+
+#ifndef __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_XBAR_H
+#define __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_XBAR_H
+
+/****************************************************************************
+ * Included Files
+ ****************************************************************************/
+
+#include <nuttx/config.h>
+#include "hardware/imxrt_memorymap.h"
+
+/****************************************************************************
+ * Pre-processor Definitions
+ ****************************************************************************/
+
+/* Generated from NXP MIMXRT1186_cm33.xml (SVD). */
+
+/* XBAR1 Register Offsets (base IMXRT_XBAR1_BASE = 0x42750000) */
+
+#define IMXRT_XBAR1_SEL0_OFFSET 0x0000  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL1_OFFSET 0x0002  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL2_OFFSET 0x0004  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL3_OFFSET 0x0006  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL4_OFFSET 0x0008  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL5_OFFSET 0x000a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL6_OFFSET 0x000c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL7_OFFSET 0x000e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL8_OFFSET 0x0010  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL9_OFFSET 0x0012  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL10_OFFSET 0x0014  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL11_OFFSET 0x0016  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL12_OFFSET 0x0018  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL13_OFFSET 0x001a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL14_OFFSET 0x001c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL15_OFFSET 0x001e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL16_OFFSET 0x0020  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL17_OFFSET 0x0022  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL18_OFFSET 0x0024  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL19_OFFSET 0x0026  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL20_OFFSET 0x0028  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL21_OFFSET 0x002a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL22_OFFSET 0x002c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL23_OFFSET 0x002e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL24_OFFSET 0x0030  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL25_OFFSET 0x0032  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL26_OFFSET 0x0034  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL27_OFFSET 0x0036  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL28_OFFSET 0x0038  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL29_OFFSET 0x003a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL30_OFFSET 0x003c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL31_OFFSET 0x003e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL32_OFFSET 0x0040  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL33_OFFSET 0x0042  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL34_OFFSET 0x0044  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL35_OFFSET 0x0046  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL36_OFFSET 0x0048  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL37_OFFSET 0x004a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL38_OFFSET 0x004c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL39_OFFSET 0x004e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL40_OFFSET 0x0050  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL41_OFFSET 0x0052  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL42_OFFSET 0x0054  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL43_OFFSET 0x0056  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL44_OFFSET 0x0058  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL45_OFFSET 0x005a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL46_OFFSET 0x005c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL47_OFFSET 0x005e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL48_OFFSET 0x0060  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL49_OFFSET 0x0062  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL50_OFFSET 0x0064  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL51_OFFSET 0x0066  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL52_OFFSET 0x0068  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL53_OFFSET 0x006a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL54_OFFSET 0x006c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL55_OFFSET 0x006e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL56_OFFSET 0x0070  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL57_OFFSET 0x0072  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL58_OFFSET 0x0074  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL59_OFFSET 0x0076  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL60_OFFSET 0x0078  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL61_OFFSET 0x007a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL62_OFFSET 0x007c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL63_OFFSET 0x007e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL64_OFFSET 0x0080  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL65_OFFSET 0x0082  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL66_OFFSET 0x0084  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL67_OFFSET 0x0086  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL68_OFFSET 0x0088  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL69_OFFSET 0x008a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL70_OFFSET 0x008c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL71_OFFSET 0x008e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL72_OFFSET 0x0090  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL73_OFFSET 0x0092  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL74_OFFSET 0x0094  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL75_OFFSET 0x0096  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL76_OFFSET 0x0098  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL77_OFFSET 0x009a  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL78_OFFSET 0x009c  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL79_OFFSET 0x009e  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL80_OFFSET 0x00a0  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL81_OFFSET 0x00a2  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL82_OFFSET 0x00a4  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL83_OFFSET 0x00a6  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL84_OFFSET 0x00a8  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL85_OFFSET 0x00aa  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL86_OFFSET 0x00ac  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL87_OFFSET 0x00ae  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL88_OFFSET 0x00b0  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL89_OFFSET 0x00b2  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL90_OFFSET 0x00b4  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL91_OFFSET 0x00b6  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL92_OFFSET 0x00b8  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL93_OFFSET 0x00ba  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL94_OFFSET 0x00bc  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL95_OFFSET 0x00be  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL96_OFFSET 0x00c0  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL97_OFFSET 0x00c2  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL98_OFFSET 0x00c4  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL99_OFFSET 0x00c6  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL100_OFFSET 0x00c8  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL101_OFFSET 0x00ca  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL102_OFFSET 0x00cc  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL103_OFFSET 0x00ce  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL104_OFFSET 0x00d0  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL105_OFFSET 0x00d2  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL106_OFFSET 0x00d4  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL107_OFFSET 0x00d6  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL108_OFFSET 0x00d8  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL109_OFFSET 0x00da  /* Crossbar Select Register */
+#define IMXRT_XBAR1_SEL110_OFFSET 0x00dc  /* Crossbar Select Register */
+#define IMXRT_XBAR1_CTRL0_OFFSET 0x00de  /* Crossbar Control Register */
+#define IMXRT_XBAR1_CTRL1_OFFSET 0x00e0  /* Crossbar Control Register */
+
+/* XBAR1 Register Addresses */
+
+#define IMXRT_XBAR1_SEL0 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL0_OFFSET)
+#define IMXRT_XBAR1_SEL1 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL1_OFFSET)
+#define IMXRT_XBAR1_SEL2 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL2_OFFSET)
+#define IMXRT_XBAR1_SEL3 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL3_OFFSET)
+#define IMXRT_XBAR1_SEL4 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL4_OFFSET)
+#define IMXRT_XBAR1_SEL5 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL5_OFFSET)
+#define IMXRT_XBAR1_SEL6 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL6_OFFSET)
+#define IMXRT_XBAR1_SEL7 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL7_OFFSET)
+#define IMXRT_XBAR1_SEL8 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL8_OFFSET)
+#define IMXRT_XBAR1_SEL9 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL9_OFFSET)
+#define IMXRT_XBAR1_SEL10 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL10_OFFSET)
+#define IMXRT_XBAR1_SEL11 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL11_OFFSET)
+#define IMXRT_XBAR1_SEL12 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL12_OFFSET)
+#define IMXRT_XBAR1_SEL13 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL13_OFFSET)
+#define IMXRT_XBAR1_SEL14 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL14_OFFSET)
+#define IMXRT_XBAR1_SEL15 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL15_OFFSET)
+#define IMXRT_XBAR1_SEL16 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL16_OFFSET)
+#define IMXRT_XBAR1_SEL17 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL17_OFFSET)
+#define IMXRT_XBAR1_SEL18 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL18_OFFSET)
+#define IMXRT_XBAR1_SEL19 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL19_OFFSET)
+#define IMXRT_XBAR1_SEL20 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL20_OFFSET)
+#define IMXRT_XBAR1_SEL21 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL21_OFFSET)
+#define IMXRT_XBAR1_SEL22 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL22_OFFSET)
+#define IMXRT_XBAR1_SEL23 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL23_OFFSET)
+#define IMXRT_XBAR1_SEL24 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL24_OFFSET)
+#define IMXRT_XBAR1_SEL25 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL25_OFFSET)
+#define IMXRT_XBAR1_SEL26 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL26_OFFSET)
+#define IMXRT_XBAR1_SEL27 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL27_OFFSET)
+#define IMXRT_XBAR1_SEL28 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL28_OFFSET)
+#define IMXRT_XBAR1_SEL29 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL29_OFFSET)
+#define IMXRT_XBAR1_SEL30 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL30_OFFSET)
+#define IMXRT_XBAR1_SEL31 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL31_OFFSET)
+#define IMXRT_XBAR1_SEL32 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL32_OFFSET)
+#define IMXRT_XBAR1_SEL33 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL33_OFFSET)
+#define IMXRT_XBAR1_SEL34 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL34_OFFSET)
+#define IMXRT_XBAR1_SEL35 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL35_OFFSET)
+#define IMXRT_XBAR1_SEL36 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL36_OFFSET)
+#define IMXRT_XBAR1_SEL37 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL37_OFFSET)
+#define IMXRT_XBAR1_SEL38 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL38_OFFSET)
+#define IMXRT_XBAR1_SEL39 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL39_OFFSET)
+#define IMXRT_XBAR1_SEL40 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL40_OFFSET)
+#define IMXRT_XBAR1_SEL41 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL41_OFFSET)
+#define IMXRT_XBAR1_SEL42 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL42_OFFSET)
+#define IMXRT_XBAR1_SEL43 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL43_OFFSET)
+#define IMXRT_XBAR1_SEL44 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL44_OFFSET)
+#define IMXRT_XBAR1_SEL45 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL45_OFFSET)
+#define IMXRT_XBAR1_SEL46 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL46_OFFSET)
+#define IMXRT_XBAR1_SEL47 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL47_OFFSET)
+#define IMXRT_XBAR1_SEL48 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL48_OFFSET)
+#define IMXRT_XBAR1_SEL49 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL49_OFFSET)
+#define IMXRT_XBAR1_SEL50 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL50_OFFSET)
+#define IMXRT_XBAR1_SEL51 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL51_OFFSET)
+#define IMXRT_XBAR1_SEL52 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL52_OFFSET)
+#define IMXRT_XBAR1_SEL53 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL53_OFFSET)
+#define IMXRT_XBAR1_SEL54 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL54_OFFSET)
+#define IMXRT_XBAR1_SEL55 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL55_OFFSET)
+#define IMXRT_XBAR1_SEL56 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL56_OFFSET)
+#define IMXRT_XBAR1_SEL57 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL57_OFFSET)
+#define IMXRT_XBAR1_SEL58 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL58_OFFSET)
+#define IMXRT_XBAR1_SEL59 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL59_OFFSET)
+#define IMXRT_XBAR1_SEL60 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL60_OFFSET)
+#define IMXRT_XBAR1_SEL61 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL61_OFFSET)
+#define IMXRT_XBAR1_SEL62 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL62_OFFSET)
+#define IMXRT_XBAR1_SEL63 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL63_OFFSET)
+#define IMXRT_XBAR1_SEL64 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL64_OFFSET)
+#define IMXRT_XBAR1_SEL65 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL65_OFFSET)
+#define IMXRT_XBAR1_SEL66 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL66_OFFSET)
+#define IMXRT_XBAR1_SEL67 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL67_OFFSET)
+#define IMXRT_XBAR1_SEL68 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL68_OFFSET)
+#define IMXRT_XBAR1_SEL69 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL69_OFFSET)
+#define IMXRT_XBAR1_SEL70 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL70_OFFSET)
+#define IMXRT_XBAR1_SEL71 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL71_OFFSET)
+#define IMXRT_XBAR1_SEL72 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL72_OFFSET)
+#define IMXRT_XBAR1_SEL73 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL73_OFFSET)
+#define IMXRT_XBAR1_SEL74 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL74_OFFSET)
+#define IMXRT_XBAR1_SEL75 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL75_OFFSET)
+#define IMXRT_XBAR1_SEL76 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL76_OFFSET)
+#define IMXRT_XBAR1_SEL77 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL77_OFFSET)
+#define IMXRT_XBAR1_SEL78 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL78_OFFSET)
+#define IMXRT_XBAR1_SEL79 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL79_OFFSET)
+#define IMXRT_XBAR1_SEL80 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL80_OFFSET)
+#define IMXRT_XBAR1_SEL81 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL81_OFFSET)
+#define IMXRT_XBAR1_SEL82 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL82_OFFSET)
+#define IMXRT_XBAR1_SEL83 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL83_OFFSET)
+#define IMXRT_XBAR1_SEL84 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL84_OFFSET)
+#define IMXRT_XBAR1_SEL85 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL85_OFFSET)
+#define IMXRT_XBAR1_SEL86 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL86_OFFSET)
+#define IMXRT_XBAR1_SEL87 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL87_OFFSET)
+#define IMXRT_XBAR1_SEL88 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL88_OFFSET)
+#define IMXRT_XBAR1_SEL89 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL89_OFFSET)
+#define IMXRT_XBAR1_SEL90 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL90_OFFSET)
+#define IMXRT_XBAR1_SEL91 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL91_OFFSET)
+#define IMXRT_XBAR1_SEL92 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL92_OFFSET)
+#define IMXRT_XBAR1_SEL93 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL93_OFFSET)
+#define IMXRT_XBAR1_SEL94 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL94_OFFSET)
+#define IMXRT_XBAR1_SEL95 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL95_OFFSET)
+#define IMXRT_XBAR1_SEL96 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL96_OFFSET)
+#define IMXRT_XBAR1_SEL97 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL97_OFFSET)
+#define IMXRT_XBAR1_SEL98 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL98_OFFSET)
+#define IMXRT_XBAR1_SEL99 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL99_OFFSET)
+#define IMXRT_XBAR1_SEL100 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL100_OFFSET)
+#define IMXRT_XBAR1_SEL101 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL101_OFFSET)
+#define IMXRT_XBAR1_SEL102 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL102_OFFSET)
+#define IMXRT_XBAR1_SEL103 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL103_OFFSET)
+#define IMXRT_XBAR1_SEL104 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL104_OFFSET)
+#define IMXRT_XBAR1_SEL105 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL105_OFFSET)
+#define IMXRT_XBAR1_SEL106 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL106_OFFSET)
+#define IMXRT_XBAR1_SEL107 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL107_OFFSET)
+#define IMXRT_XBAR1_SEL108 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL108_OFFSET)
+#define IMXRT_XBAR1_SEL109 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL109_OFFSET)
+#define IMXRT_XBAR1_SEL110 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_SEL110_OFFSET)
+#define IMXRT_XBAR1_CTRL0 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_CTRL0_OFFSET)
+#define IMXRT_XBAR1_CTRL1 (IMXRT_XBAR1_BASE + IMXRT_XBAR1_CTRL1_OFFSET)
+
+/* XBAR1 Bit Fields */
+
+#define XBAR1_SEL0_SEL0_SHIFT  (0)
+#define XBAR1_SEL0_SEL0_MASK   (0xffu << 0)
+#define XBAR1_SEL0_SEL1_SHIFT  (8)
+#define XBAR1_SEL0_SEL1_MASK   (0xffu << 8)
+
+#define XBAR1_SEL1_SEL2_SHIFT  (0)
+#define XBAR1_SEL1_SEL2_MASK   (0xffu << 0)
+#define XBAR1_SEL1_SEL3_SHIFT  (8)
+#define XBAR1_SEL1_SEL3_MASK   (0xffu << 8)
+
+#define XBAR1_SEL2_SEL4_SHIFT  (0)
+#define XBAR1_SEL2_SEL4_MASK   (0xffu << 0)
+#define XBAR1_SEL2_SEL5_SHIFT  (8)
+#define XBAR1_SEL2_SEL5_MASK   (0xffu << 8)
+
+#define XBAR1_SEL3_SEL6_SHIFT  (0)
+#define XBAR1_SEL3_SEL6_MASK   (0xffu << 0)
+#define XBAR1_SEL3_SEL7_SHIFT  (8)
+#define XBAR1_SEL3_SEL7_MASK   (0xffu << 8)
+
+#define XBAR1_SEL4_SEL8_SHIFT  (0)
+#define XBAR1_SEL4_SEL8_MASK   (0xffu << 0)
+#define XBAR1_SEL4_SEL9_SHIFT  (8)
+#define XBAR1_SEL4_SEL9_MASK   (0xffu << 8)
+
+#define XBAR1_SEL5_SEL10_SHIFT  (0)
+#define XBAR1_SEL5_SEL10_MASK   (0xffu << 0)
+#define XBAR1_SEL5_SEL11_SHIFT  (8)
+#define XBAR1_SEL5_SEL11_MASK   (0xffu << 8)
+
+#define XBAR1_SEL6_SEL12_SHIFT  (0)
+#define XBAR1_SEL6_SEL12_MASK   (0xffu << 0)
+#define XBAR1_SEL6_SEL13_SHIFT  (8)
+#define XBAR1_SEL6_SEL13_MASK   (0xffu << 8)
+
+#define XBAR1_SEL7_SEL14_SHIFT  (0)
+#define XBAR1_SEL7_SEL14_MASK   (0xffu << 0)
+#define XBAR1_SEL7_SEL15_SHIFT  (8)
+#define XBAR1_SEL7_SEL15_MASK   (0xffu << 8)
+
+#define XBAR1_SEL8_SEL16_SHIFT  (0)
+#define XBAR1_SEL8_SEL16_MASK   (0xffu << 0)
+#define XBAR1_SEL8_SEL17_SHIFT  (8)
+#define XBAR1_SEL8_SEL17_MASK   (0xffu << 8)
+
+#define XBAR1_SEL9_SEL18_SHIFT  (0)
+#define XBAR1_SEL9_SEL18_MASK   (0xffu << 0)
+#define XBAR1_SEL9_SEL19_SHIFT  (8)
+#define XBAR1_SEL9_SEL19_MASK   (0xffu << 8)
+
+#define XBAR1_SEL10_SEL20_SHIFT  (0)
+#define XBAR1_SEL10_SEL20_MASK   (0xffu << 0)
+#define XBAR1_SEL10_SEL21_SHIFT  (8)
+#define XBAR1_SEL10_SEL21_MASK   (0xffu << 8)
+
+#define XBAR1_SEL11_SEL22_SHIFT  (0)
+#define XBAR1_SEL11_SEL22_MASK   (0xffu << 0)
+#define XBAR1_SEL11_SEL23_SHIFT  (8)
+#define XBAR1_SEL11_SEL23_MASK   (0xffu << 8)
+
+#define XBAR1_SEL12_SEL24_SHIFT  (0)
+#define XBAR1_SEL12_SEL24_MASK   (0xffu << 0)
+#define XBAR1_SEL12_SEL25_SHIFT  (8)
+#define XBAR1_SEL12_SEL25_MASK   (0xffu << 8)
+
+#define XBAR1_SEL13_SEL26_SHIFT  (0)
+#define XBAR1_SEL13_SEL26_MASK   (0xffu << 0)
+#define XBAR1_SEL13_SEL27_SHIFT  (8)
+#define XBAR1_SEL13_SEL27_MASK   (0xffu << 8)
+
+#define XBAR1_SEL14_SEL28_SHIFT  (0)
+#define XBAR1_SEL14_SEL28_MASK   (0xffu << 0)
+#define XBAR1_SEL14_SEL29_SHIFT  (8)
+#define XBAR1_SEL14_SEL29_MASK   (0xffu << 8)
+
+#define XBAR1_SEL15_SEL30_SHIFT  (0)
+#define XBAR1_SEL15_SEL30_MASK   (0xffu << 0)
+#define XBAR1_SEL15_SEL31_SHIFT  (8)
+#define XBAR1_SEL15_SEL31_MASK   (0xffu << 8)
+
+#define XBAR1_SEL16_SEL32_SHIFT  (0)
+#define XBAR1_SEL16_SEL32_MASK   (0xffu << 0)
+#define XBAR1_SEL16_SEL33_SHIFT  (8)
+#define XBAR1_SEL16_SEL33_MASK   (0xffu << 8)
+
+#define XBAR1_SEL17_SEL34_SHIFT  (0)
+#define XBAR1_SEL17_SEL34_MASK   (0xffu << 0)
+#define XBAR1_SEL17_SEL35_SHIFT  (8)
+#define XBAR1_SEL17_SEL35_MASK   (0xffu << 8)
+
+#define XBAR1_SEL18_SEL36_SHIFT  (0)
+#define XBAR1_SEL18_SEL36_MASK   (0xffu << 0)
+#define XBAR1_SEL18_SEL37_SHIFT  (8)
+#define XBAR1_SEL18_SEL37_MASK   (0xffu << 8)
+
+#define XBAR1_SEL19_SEL38_SHIFT  (0)
+#define XBAR1_SEL19_SEL38_MASK   (0xffu << 0)
+#define XBAR1_SEL19_SEL39_SHIFT  (8)
+#define XBAR1_SEL19_SEL39_MASK   (0xffu << 8)
+
+#define XBAR1_SEL20_SEL40_SHIFT  (0)
+#define XBAR1_SEL20_SEL40_MASK   (0xffu << 0)
+#define XBAR1_SEL20_SEL41_SHIFT  (8)
+#define XBAR1_SEL20_SEL41_MASK   (0xffu << 8)
+
+#define XBAR1_SEL21_SEL42_SHIFT  (0)
+#define XBAR1_SEL21_SEL42_MASK   (0xffu << 0)
+#define XBAR1_SEL21_SEL43_SHIFT  (8)
+#define XBAR1_SEL21_SEL43_MASK   (0xffu << 8)
+
+#define XBAR1_SEL22_SEL44_SHIFT  (0)
+#define XBAR1_SEL22_SEL44_MASK   (0xffu << 0)
+#define XBAR1_SEL22_SEL45_SHIFT  (8)
+#define XBAR1_SEL22_SEL45_MASK   (0xffu << 8)
+
+#define XBAR1_SEL23_SEL46_SHIFT  (0)
+#define XBAR1_SEL23_SEL46_MASK   (0xffu << 0)
+#define XBAR1_SEL23_SEL47_SHIFT  (8)
+#define XBAR1_SEL23_SEL47_MASK   (0xffu << 8)
+
+#define XBAR1_SEL24_SEL48_SHIFT  (0)
+#define XBAR1_SEL24_SEL48_MASK   (0xffu << 0)
+#define XBAR1_SEL24_SEL49_SHIFT  (8)
+#define XBAR1_SEL24_SEL49_MASK   (0xffu << 8)
+
+#define XBAR1_SEL25_SEL50_SHIFT  (0)
+#define XBAR1_SEL25_SEL50_MASK   (0xffu << 0)
+#define XBAR1_SEL25_SEL51_SHIFT  (8)
+#define XBAR1_SEL25_SEL51_MASK   (0xffu << 8)
+
+#define XBAR1_SEL26_SEL52_SHIFT  (0)
+#define XBAR1_SEL26_SEL52_MASK   (0xffu << 0)
+#define XBAR1_SEL26_SEL53_SHIFT  (8)
+#define XBAR1_SEL26_SEL53_MASK   (0xffu << 8)
+
+#define XBAR1_SEL27_SEL54_SHIFT  (0)
+#define XBAR1_SEL27_SEL54_MASK   (0xffu << 0)
+#define XBAR1_SEL27_SEL55_SHIFT  (8)
+#define XBAR1_SEL27_SEL55_MASK   (0xffu << 8)
+
+#define XBAR1_SEL28_SEL56_SHIFT  (0)
+#define XBAR1_SEL28_SEL56_MASK   (0xffu << 0)
+#define XBAR1_SEL28_SEL57_SHIFT  (8)
+#define XBAR1_SEL28_SEL57_MASK   (0xffu << 8)
+
+#define XBAR1_SEL29_SEL58_SHIFT  (0)
+#define XBAR1_SEL29_SEL58_MASK   (0xffu << 0)
+#define XBAR1_SEL29_SEL59_SHIFT  (8)
+#define XBAR1_SEL29_SEL59_MASK   (0xffu << 8)
+
+#define XBAR1_SEL30_SEL60_SHIFT  (0)
+#define XBAR1_SEL30_SEL60_MASK   (0xffu << 0)
+#define XBAR1_SEL30_SEL61_SHIFT  (8)
+#define XBAR1_SEL30_SEL61_MASK   (0xffu << 8)
+
+#define XBAR1_SEL31_SEL62_SHIFT  (0)
+#define XBAR1_SEL31_SEL62_MASK   (0xffu << 0)
+#define XBAR1_SEL31_SEL63_SHIFT  (8)
+#define XBAR1_SEL31_SEL63_MASK   (0xffu << 8)
+
+#define XBAR1_SEL32_SEL64_SHIFT  (0)
+#define XBAR1_SEL32_SEL64_MASK   (0xffu << 0)
+#define XBAR1_SEL32_SEL65_SHIFT  (8)
+#define XBAR1_SEL32_SEL65_MASK   (0xffu << 8)
+
+#define XBAR1_SEL33_SEL66_SHIFT  (0)
+#define XBAR1_SEL33_SEL66_MASK   (0xffu << 0)
+#define XBAR1_SEL33_SEL67_SHIFT  (8)
+#define XBAR1_SEL33_SEL67_MASK   (0xffu << 8)
+
+#define XBAR1_SEL34_SEL68_SHIFT  (0)
+#define XBAR1_SEL34_SEL68_MASK   (0xffu << 0)
+#define XBAR1_SEL34_SEL69_SHIFT  (8)
+#define XBAR1_SEL34_SEL69_MASK   (0xffu << 8)
+
+#define XBAR1_SEL35_SEL70_SHIFT  (0)
+#define XBAR1_SEL35_SEL70_MASK   (0xffu << 0)
+#define XBAR1_SEL35_SEL71_SHIFT  (8)
+#define XBAR1_SEL35_SEL71_MASK   (0xffu << 8)
+
+#define XBAR1_SEL36_SEL72_SHIFT  (0)
+#define XBAR1_SEL36_SEL72_MASK   (0xffu << 0)
+#define XBAR1_SEL36_SEL73_SHIFT  (8)
+#define XBAR1_SEL36_SEL73_MASK   (0xffu << 8)
+
+#define XBAR1_SEL37_SEL74_SHIFT  (0)
+#define XBAR1_SEL37_SEL74_MASK   (0xffu << 0)
+#define XBAR1_SEL37_SEL75_SHIFT  (8)
+#define XBAR1_SEL37_SEL75_MASK   (0xffu << 8)
+
+#define XBAR1_SEL38_SEL76_SHIFT  (0)
+#define XBAR1_SEL38_SEL76_MASK   (0xffu << 0)
+#define XBAR1_SEL38_SEL77_SHIFT  (8)
+#define XBAR1_SEL38_SEL77_MASK   (0xffu << 8)
+
+#define XBAR1_SEL39_SEL78_SHIFT  (0)
+#define XBAR1_SEL39_SEL78_MASK   (0xffu << 0)
+#define XBAR1_SEL39_SEL79_SHIFT  (8)
+#define XBAR1_SEL39_SEL79_MASK   (0xffu << 8)
+
+#define XBAR1_SEL40_SEL80_SHIFT  (0)
+#define XBAR1_SEL40_SEL80_MASK   (0xffu << 0)
+#define XBAR1_SEL40_SEL81_SHIFT  (8)
+#define XBAR1_SEL40_SEL81_MASK   (0xffu << 8)
+
+#define XBAR1_SEL41_SEL82_SHIFT  (0)
+#define XBAR1_SEL41_SEL82_MASK   (0xffu << 0)
+#define XBAR1_SEL41_SEL83_SHIFT  (8)
+#define XBAR1_SEL41_SEL83_MASK   (0xffu << 8)
+
+#define XBAR1_SEL42_SEL84_SHIFT  (0)
+#define XBAR1_SEL42_SEL84_MASK   (0xffu << 0)
+#define XBAR1_SEL42_SEL85_SHIFT  (8)
+#define XBAR1_SEL42_SEL85_MASK   (0xffu << 8)
+
+#define XBAR1_SEL43_SEL86_SHIFT  (0)
+#define XBAR1_SEL43_SEL86_MASK   (0xffu << 0)
+#define XBAR1_SEL43_SEL87_SHIFT  (8)
+#define XBAR1_SEL43_SEL87_MASK   (0xffu << 8)
+
+#define XBAR1_SEL44_SEL88_SHIFT  (0)
+#define XBAR1_SEL44_SEL88_MASK   (0xffu << 0)
+#define XBAR1_SEL44_SEL89_SHIFT  (8)
+#define XBAR1_SEL44_SEL89_MASK   (0xffu << 8)
+
+#define XBAR1_SEL45_SEL90_SHIFT  (0)
+#define XBAR1_SEL45_SEL90_MASK   (0xffu << 0)
+#define XBAR1_SEL45_SEL91_SHIFT  (8)
+#define XBAR1_SEL45_SEL91_MASK   (0xffu << 8)
+
+#define XBAR1_SEL46_SEL92_SHIFT  (0)
+#define XBAR1_SEL46_SEL92_MASK   (0xffu << 0)
+#define XBAR1_SEL46_SEL93_SHIFT  (8)
+#define XBAR1_SEL46_SEL93_MASK   (0xffu << 8)
+
+#define XBAR1_SEL47_SEL94_SHIFT  (0)
+#define XBAR1_SEL47_SEL94_MASK   (0xffu << 0)
+#define XBAR1_SEL47_SEL95_SHIFT  (8)
+#define XBAR1_SEL47_SEL95_MASK   (0xffu << 8)
+
+#define XBAR1_SEL48_SEL96_SHIFT  (0)
+#define XBAR1_SEL48_SEL96_MASK   (0xffu << 0)
+#define XBAR1_SEL48_SEL97_SHIFT  (8)
+#define XBAR1_SEL48_SEL97_MASK   (0xffu << 8)
+
+#define XBAR1_SEL49_SEL98_SHIFT  (0)
+#define XBAR1_SEL49_SEL98_MASK   (0xffu << 0)
+#define XBAR1_SEL49_SEL99_SHIFT  (8)
+#define XBAR1_SEL49_SEL99_MASK   (0xffu << 8)
+
+#define XBAR1_SEL50_SEL100_SHIFT  (0)
+#define XBAR1_SEL50_SEL100_MASK   (0xffu << 0)
+#define XBAR1_SEL50_SEL101_SHIFT  (8)
+#define XBAR1_SEL50_SEL101_MASK   (0xffu << 8)
+
+#define XBAR1_SEL51_SEL102_SHIFT  (0)
+#define XBAR1_SEL51_SEL102_MASK   (0xffu << 0)
+#define XBAR1_SEL51_SEL103_SHIFT  (8)
+#define XBAR1_SEL51_SEL103_MASK   (0xffu << 8)
+
+#define XBAR1_SEL52_SEL104_SHIFT  (0)
+#define XBAR1_SEL52_SEL104_MASK   (0xffu << 0)
+#define XBAR1_SEL52_SEL105_SHIFT  (8)
+#define XBAR1_SEL52_SEL105_MASK   (0xffu << 8)
+
+#define XBAR1_SEL53_SEL106_SHIFT  (0)
+#define XBAR1_SEL53_SEL106_MASK   (0xffu << 0)
+#define XBAR1_SEL53_SEL107_SHIFT  (8)
+#define XBAR1_SEL53_SEL107_MASK   (0xffu << 8)
+
+#define XBAR1_SEL54_SEL108_SHIFT  (0)
+#define XBAR1_SEL54_SEL108_MASK   (0xffu << 0)
+#define XBAR1_SEL54_SEL109_SHIFT  (8)
+#define XBAR1_SEL54_SEL109_MASK   (0xffu << 8)
+
+#define XBAR1_SEL55_SEL110_SHIFT  (0)
+#define XBAR1_SEL55_SEL110_MASK   (0xffu << 0)
+#define XBAR1_SEL55_SEL111_SHIFT  (8)
+#define XBAR1_SEL55_SEL111_MASK   (0xffu << 8)
+
+#define XBAR1_SEL56_SEL112_SHIFT  (0)
+#define XBAR1_SEL56_SEL112_MASK   (0xffu << 0)
+#define XBAR1_SEL56_SEL113_SHIFT  (8)
+#define XBAR1_SEL56_SEL113_MASK   (0xffu << 8)
+
+#define XBAR1_SEL57_SEL114_SHIFT  (0)
+#define XBAR1_SEL57_SEL114_MASK   (0xffu << 0)
+#define XBAR1_SEL57_SEL115_SHIFT  (8)
+#define XBAR1_SEL57_SEL115_MASK   (0xffu << 8)
+
+#define XBAR1_SEL58_SEL116_SHIFT  (0)
+#define XBAR1_SEL58_SEL116_MASK   (0xffu << 0)
+#define XBAR1_SEL58_SEL117_SHIFT  (8)
+#define XBAR1_SEL58_SEL117_MASK   (0xffu << 8)
+
+#define XBAR1_SEL59_SEL118_SHIFT  (0)
+#define XBAR1_SEL59_SEL118_MASK   (0xffu << 0)
+#define XBAR1_SEL59_SEL119_SHIFT  (8)
+#define XBAR1_SEL59_SEL119_MASK   (0xffu << 8)
+
+#define XBAR1_SEL60_SEL120_SHIFT  (0)
+#define XBAR1_SEL60_SEL120_MASK   (0xffu << 0)
+#define XBAR1_SEL60_SEL121_SHIFT  (8)
+#define XBAR1_SEL60_SEL121_MASK   (0xffu << 8)
+
+#define XBAR1_SEL61_SEL122_SHIFT  (0)
+#define XBAR1_SEL61_SEL122_MASK   (0xffu << 0)
+#define XBAR1_SEL61_SEL123_SHIFT  (8)
+#define XBAR1_SEL61_SEL123_MASK   (0xffu << 8)
+
+#define XBAR1_SEL62_SEL124_SHIFT  (0)
+#define XBAR1_SEL62_SEL124_MASK   (0xffu << 0)
+#define XBAR1_SEL62_SEL125_SHIFT  (8)
+#define XBAR1_SEL62_SEL125_MASK   (0xffu << 8)
+
+#define XBAR1_SEL63_SEL126_SHIFT  (0)
+#define XBAR1_SEL63_SEL126_MASK   (0xffu << 0)
+#define XBAR1_SEL63_SEL127_SHIFT  (8)
+#define XBAR1_SEL63_SEL127_MASK   (0xffu << 8)
+
+#define XBAR1_SEL64_SEL128_SHIFT  (0)
+#define XBAR1_SEL64_SEL128_MASK   (0xffu << 0)
+#define XBAR1_SEL64_SEL129_SHIFT  (8)
+#define XBAR1_SEL64_SEL129_MASK   (0xffu << 8)
+
+#define XBAR1_SEL65_SEL130_SHIFT  (0)
+#define XBAR1_SEL65_SEL130_MASK   (0xffu << 0)
+#define XBAR1_SEL65_SEL131_SHIFT  (8)
+#define XBAR1_SEL65_SEL131_MASK   (0xffu << 8)
+
+#define XBAR1_SEL66_SEL132_SHIFT  (0)
+#define XBAR1_SEL66_SEL132_MASK   (0xffu << 0)
+#define XBAR1_SEL66_SEL133_SHIFT  (8)
+#define XBAR1_SEL66_SEL133_MASK   (0xffu << 8)
+
+#define XBAR1_SEL67_SEL134_SHIFT  (0)
+#define XBAR1_SEL67_SEL134_MASK   (0xffu << 0)
+#define XBAR1_SEL67_SEL135_SHIFT  (8)
+#define XBAR1_SEL67_SEL135_MASK   (0xffu << 8)
+
+#define XBAR1_SEL68_SEL136_SHIFT  (0)
+#define XBAR1_SEL68_SEL136_MASK   (0xffu << 0)
+#define XBAR1_SEL68_SEL137_SHIFT  (8)
+#define XBAR1_SEL68_SEL137_MASK   (0xffu << 8)
+
+#define XBAR1_SEL69_SEL138_SHIFT  (0)
+#define XBAR1_SEL69_SEL138_MASK   (0xffu << 0)
+#define XBAR1_SEL69_SEL139_SHIFT  (8)
+#define XBAR1_SEL69_SEL139_MASK   (0xffu << 8)
+
+#define XBAR1_SEL70_SEL140_SHIFT  (0)
+#define XBAR1_SEL70_SEL140_MASK   (0xffu << 0)
+#define XBAR1_SEL70_SEL141_SHIFT  (8)
+#define XBAR1_SEL70_SEL141_MASK   (0xffu << 8)
+
+#define XBAR1_SEL71_SEL142_SHIFT  (0)
+#define XBAR1_SEL71_SEL142_MASK   (0xffu << 0)
+#define XBAR1_SEL71_SEL143_SHIFT  (8)
+#define XBAR1_SEL71_SEL143_MASK   (0xffu << 8)
+
+#define XBAR1_SEL72_SEL144_SHIFT  (0)
+#define XBAR1_SEL72_SEL144_MASK   (0xffu << 0)
+#define XBAR1_SEL72_SEL145_SHIFT  (8)
+#define XBAR1_SEL72_SEL145_MASK   (0xffu << 8)
+
+#define XBAR1_SEL73_SEL146_SHIFT  (0)
+#define XBAR1_SEL73_SEL146_MASK   (0xffu << 0)
+#define XBAR1_SEL73_SEL147_SHIFT  (8)
+#define XBAR1_SEL73_SEL147_MASK   (0xffu << 8)
+
+#define XBAR1_SEL74_SEL148_SHIFT  (0)
+#define XBAR1_SEL74_SEL148_MASK   (0xffu << 0)
+#define XBAR1_SEL74_SEL149_SHIFT  (8)
+#define XBAR1_SEL74_SEL149_MASK   (0xffu << 8)
+
+#define XBAR1_SEL75_SEL150_SHIFT  (0)
+#define XBAR1_SEL75_SEL150_MASK   (0xffu << 0)
+#define XBAR1_SEL75_SEL151_SHIFT  (8)
+#define XBAR1_SEL75_SEL151_MASK   (0xffu << 8)
+
+#define XBAR1_SEL76_SEL152_SHIFT  (0)
+#define XBAR1_SEL76_SEL152_MASK   (0xffu << 0)
+#define XBAR1_SEL76_SEL153_SHIFT  (8)
+#define XBAR1_SEL76_SEL153_MASK   (0xffu << 8)
+
+#define XBAR1_SEL77_SEL154_SHIFT  (0)
+#define XBAR1_SEL77_SEL154_MASK   (0xffu << 0)
+#define XBAR1_SEL77_SEL155_SHIFT  (8)
+#define XBAR1_SEL77_SEL155_MASK   (0xffu << 8)
+
+#define XBAR1_SEL78_SEL156_SHIFT  (0)
+#define XBAR1_SEL78_SEL156_MASK   (0xffu << 0)
+#define XBAR1_SEL78_SEL157_SHIFT  (8)
+#define XBAR1_SEL78_SEL157_MASK   (0xffu << 8)
+
+#define XBAR1_SEL79_SEL158_SHIFT  (0)
+#define XBAR1_SEL79_SEL158_MASK   (0xffu << 0)
+#define XBAR1_SEL79_SEL159_SHIFT  (8)
+#define XBAR1_SEL79_SEL159_MASK   (0xffu << 8)
+
+#define XBAR1_SEL80_SEL160_SHIFT  (0)
+#define XBAR1_SEL80_SEL160_MASK   (0xffu << 0)
+#define XBAR1_SEL80_SEL161_SHIFT  (8)
+#define XBAR1_SEL80_SEL161_MASK   (0xffu << 8)
+
+#define XBAR1_SEL81_SEL162_SHIFT  (0)
+#define XBAR1_SEL81_SEL162_MASK   (0xffu << 0)
+#define XBAR1_SEL81_SEL163_SHIFT  (8)
+#define XBAR1_SEL81_SEL163_MASK   (0xffu << 8)
+
+#define XBAR1_SEL82_SEL164_SHIFT  (0)
+#define XBAR1_SEL82_SEL164_MASK   (0xffu << 0)
+#define XBAR1_SEL82_SEL165_SHIFT  (8)
+#define XBAR1_SEL82_SEL165_MASK   (0xffu << 8)
+
+#define XBAR1_SEL83_SEL166_SHIFT  (0)
+#define XBAR1_SEL83_SEL166_MASK   (0xffu << 0)
+#define XBAR1_SEL83_SEL167_SHIFT  (8)
+#define XBAR1_SEL83_SEL167_MASK   (0xffu << 8)
+
+#define XBAR1_SEL84_SEL168_SHIFT  (0)
+#define XBAR1_SEL84_SEL168_MASK   (0xffu << 0)
+#define XBAR1_SEL84_SEL169_SHIFT  (8)
+#define XBAR1_SEL84_SEL169_MASK   (0xffu << 8)
+
+#define XBAR1_SEL85_SEL170_SHIFT  (0)
+#define XBAR1_SEL85_SEL170_MASK   (0xffu << 0)
+#define XBAR1_SEL85_SEL171_SHIFT  (8)
+#define XBAR1_SEL85_SEL171_MASK   (0xffu << 8)
+
+#define XBAR1_SEL86_SEL172_SHIFT  (0)
+#define XBAR1_SEL86_SEL172_MASK   (0xffu << 0)
+#define XBAR1_SEL86_SEL173_SHIFT  (8)
+#define XBAR1_SEL86_SEL173_MASK   (0xffu << 8)
+
+#define XBAR1_SEL87_SEL174_SHIFT  (0)
+#define XBAR1_SEL87_SEL174_MASK   (0xffu << 0)
+#define XBAR1_SEL87_SEL175_SHIFT  (8)
+#define XBAR1_SEL87_SEL175_MASK   (0xffu << 8)
+
+#define XBAR1_SEL88_SEL176_SHIFT  (0)
+#define XBAR1_SEL88_SEL176_MASK   (0xffu << 0)
+#define XBAR1_SEL88_SEL177_SHIFT  (8)
+#define XBAR1_SEL88_SEL177_MASK   (0xffu << 8)
+
+#define XBAR1_SEL89_SEL178_SHIFT  (0)
+#define XBAR1_SEL89_SEL178_MASK   (0xffu << 0)
+#define XBAR1_SEL89_SEL179_SHIFT  (8)
+#define XBAR1_SEL89_SEL179_MASK   (0xffu << 8)
+
+#define XBAR1_SEL90_SEL180_SHIFT  (0)
+#define XBAR1_SEL90_SEL180_MASK   (0xffu << 0)
+#define XBAR1_SEL90_SEL181_SHIFT  (8)
+#define XBAR1_SEL90_SEL181_MASK   (0xffu << 8)
+
+#define XBAR1_SEL91_SEL182_SHIFT  (0)
+#define XBAR1_SEL91_SEL182_MASK   (0xffu << 0)
+#define XBAR1_SEL91_SEL183_SHIFT  (8)
+#define XBAR1_SEL91_SEL183_MASK   (0xffu << 8)
+
+#define XBAR1_SEL92_SEL184_SHIFT  (0)
+#define XBAR1_SEL92_SEL184_MASK   (0xffu << 0)
+#define XBAR1_SEL92_SEL185_SHIFT  (8)
+#define XBAR1_SEL92_SEL185_MASK   (0xffu << 8)
+
+#define XBAR1_SEL93_SEL186_SHIFT  (0)
+#define XBAR1_SEL93_SEL186_MASK   (0xffu << 0)
+#define XBAR1_SEL93_SEL187_SHIFT  (8)
+#define XBAR1_SEL93_SEL187_MASK   (0xffu << 8)
+
+#define XBAR1_SEL94_SEL188_SHIFT  (0)
+#define XBAR1_SEL94_SEL188_MASK   (0xffu << 0)
+#define XBAR1_SEL94_SEL189_SHIFT  (8)
+#define XBAR1_SEL94_SEL189_MASK   (0xffu << 8)
+
+#define XBAR1_SEL95_SEL190_SHIFT  (0)
+#define XBAR1_SEL95_SEL190_MASK   (0xffu << 0)
+#define XBAR1_SEL95_SEL191_SHIFT  (8)
+#define XBAR1_SEL95_SEL191_MASK   (0xffu << 8)
+
+#define XBAR1_SEL96_SEL192_SHIFT  (0)
+#define XBAR1_SEL96_SEL192_MASK   (0xffu << 0)
+#define XBAR1_SEL96_SEL193_SHIFT  (8)
+#define XBAR1_SEL96_SEL193_MASK   (0xffu << 8)
+
+#define XBAR1_SEL97_SEL194_SHIFT  (0)
+#define XBAR1_SEL97_SEL194_MASK   (0xffu << 0)
+#define XBAR1_SEL97_SEL195_SHIFT  (8)
+#define XBAR1_SEL97_SEL195_MASK   (0xffu << 8)
+
+#define XBAR1_SEL98_SEL196_SHIFT  (0)
+#define XBAR1_SEL98_SEL196_MASK   (0xffu << 0)
+#define XBAR1_SEL98_SEL197_SHIFT  (8)
+#define XBAR1_SEL98_SEL197_MASK   (0xffu << 8)
+
+#define XBAR1_SEL99_SEL198_SHIFT  (0)
+#define XBAR1_SEL99_SEL198_MASK   (0xffu << 0)
+#define XBAR1_SEL99_SEL199_SHIFT  (8)
+#define XBAR1_SEL99_SEL199_MASK   (0xffu << 8)
+
+#define XBAR1_SEL100_SEL200_SHIFT  (0)
+#define XBAR1_SEL100_SEL200_MASK   (0xffu << 0)
+#define XBAR1_SEL100_SEL201_SHIFT  (8)
+#define XBAR1_SEL100_SEL201_MASK   (0xffu << 8)
+
+#define XBAR1_SEL101_SEL202_SHIFT  (0)
+#define XBAR1_SEL101_SEL202_MASK   (0xffu << 0)
+#define XBAR1_SEL101_SEL203_SHIFT  (8)
+#define XBAR1_SEL101_SEL203_MASK   (0xffu << 8)
+
+#define XBAR1_SEL102_SEL204_SHIFT  (0)
+#define XBAR1_SEL102_SEL204_MASK   (0xffu << 0)
+#define XBAR1_SEL102_SEL205_SHIFT  (8)
+#define XBAR1_SEL102_SEL205_MASK   (0xffu << 8)
+
+#define XBAR1_SEL103_SEL206_SHIFT  (0)
+#define XBAR1_SEL103_SEL206_MASK   (0xffu << 0)
+#define XBAR1_SEL103_SEL207_SHIFT  (8)
+#define XBAR1_SEL103_SEL207_MASK   (0xffu << 8)
+
+#define XBAR1_SEL104_SEL208_SHIFT  (0)
+#define XBAR1_SEL104_SEL208_MASK   (0xffu << 0)
+#define XBAR1_SEL104_SEL209_SHIFT  (8)
+#define XBAR1_SEL104_SEL209_MASK   (0xffu << 8)
+
+#define XBAR1_SEL105_SEL210_SHIFT  (0)
+#define XBAR1_SEL105_SEL210_MASK   (0xffu << 0)
+#define XBAR1_SEL105_SEL211_SHIFT  (8)
+#define XBAR1_SEL105_SEL211_MASK   (0xffu << 8)
+
+#define XBAR1_SEL106_SEL212_SHIFT  (0)
+#define XBAR1_SEL106_SEL212_MASK   (0xffu << 0)
+#define XBAR1_SEL106_SEL213_SHIFT  (8)
+#define XBAR1_SEL106_SEL213_MASK   (0xffu << 8)
+
+#define XBAR1_SEL107_SEL214_SHIFT  (0)
+#define XBAR1_SEL107_SEL214_MASK   (0xffu << 0)
+#define XBAR1_SEL107_SEL215_SHIFT  (8)
+#define XBAR1_SEL107_SEL215_MASK   (0xffu << 8)
+
+#define XBAR1_SEL108_SEL216_SHIFT  (0)
+#define XBAR1_SEL108_SEL216_MASK   (0xffu << 0)
+#define XBAR1_SEL108_SEL217_SHIFT  (8)
+#define XBAR1_SEL108_SEL217_MASK   (0xffu << 8)
+
+#define XBAR1_SEL109_SEL218_SHIFT  (0)
+#define XBAR1_SEL109_SEL218_MASK   (0xffu << 0)
+#define XBAR1_SEL109_SEL219_SHIFT  (8)
+#define XBAR1_SEL109_SEL219_MASK   (0xffu << 8)
+
+#define XBAR1_SEL110_SEL220_SHIFT  (0)
+#define XBAR1_SEL110_SEL220_MASK   (0xffu << 0)
+
+#define XBAR1_CTRL0_DEN0  (1u << 0)
+#define XBAR1_CTRL0_IEN0  (1u << 1)
+#define XBAR1_CTRL0_EDGE0_SHIFT  (2)
+#define XBAR1_CTRL0_EDGE0_MASK   (0x3u << 2)
+#define XBAR1_CTRL0_STS0  (1u << 4)
+#define XBAR1_CTRL0_DEN1  (1u << 8)
+#define XBAR1_CTRL0_IEN1  (1u << 9)
+#define XBAR1_CTRL0_EDGE1_SHIFT  (10)
+#define XBAR1_CTRL0_EDGE1_MASK   (0x3u << 10)
+#define XBAR1_CTRL0_STS1  (1u << 12)
+
+#define XBAR1_CTRL1_DEN2  (1u << 0)
+#define XBAR1_CTRL1_IEN2  (1u << 1)
+#define XBAR1_CTRL1_EDGE2_SHIFT  (2)
+#define XBAR1_CTRL1_EDGE2_MASK   (0x3u << 2)
+#define XBAR1_CTRL1_STS2  (1u << 4)
+#define XBAR1_CTRL1_DEN3  (1u << 8)
+#define XBAR1_CTRL1_IEN3  (1u << 9)
+#define XBAR1_CTRL1_EDGE3_SHIFT  (10)
+#define XBAR1_CTRL1_EDGE3_MASK   (0x3u << 10)
+#define XBAR1_CTRL1_STS3  (1u << 12)
+
+/* XBAR2 Register Offsets (base IMXRT_XBAR2_BASE = 0x42760000) */
+
+#define IMXRT_XBAR2_SEL0_OFFSET 0x0000  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL1_OFFSET 0x0002  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL2_OFFSET 0x0004  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL3_OFFSET 0x0006  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL4_OFFSET 0x0008  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL5_OFFSET 0x000a  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL6_OFFSET 0x000c  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL7_OFFSET 0x000e  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL8_OFFSET 0x0010  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL9_OFFSET 0x0012  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL10_OFFSET 0x0014  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL11_OFFSET 0x0016  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL12_OFFSET 0x0018  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL13_OFFSET 0x001a  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL14_OFFSET 0x001c  /* Crossbar Select Register */
+#define IMXRT_XBAR2_SEL15_OFFSET 0x001e  /* Crossbar Select Register */
+
+/* XBAR2 Register Addresses */
+
+#define IMXRT_XBAR2_SEL0 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL0_OFFSET)
+#define IMXRT_XBAR2_SEL1 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL1_OFFSET)
+#define IMXRT_XBAR2_SEL2 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL2_OFFSET)
+#define IMXRT_XBAR2_SEL3 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL3_OFFSET)
+#define IMXRT_XBAR2_SEL4 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL4_OFFSET)
+#define IMXRT_XBAR2_SEL5 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL5_OFFSET)
+#define IMXRT_XBAR2_SEL6 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL6_OFFSET)
+#define IMXRT_XBAR2_SEL7 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL7_OFFSET)
+#define IMXRT_XBAR2_SEL8 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL8_OFFSET)
+#define IMXRT_XBAR2_SEL9 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL9_OFFSET)
+#define IMXRT_XBAR2_SEL10 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL10_OFFSET)
+#define IMXRT_XBAR2_SEL11 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL11_OFFSET)
+#define IMXRT_XBAR2_SEL12 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL12_OFFSET)
+#define IMXRT_XBAR2_SEL13 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL13_OFFSET)
+#define IMXRT_XBAR2_SEL14 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL14_OFFSET)
+#define IMXRT_XBAR2_SEL15 (IMXRT_XBAR2_BASE + IMXRT_XBAR2_SEL15_OFFSET)
+
+/* XBAR2 Bit Fields */
+
+#define XBAR2_SEL0_SEL0_SHIFT  (0)
+#define XBAR2_SEL0_SEL0_MASK   (0xffu << 0)
+#define XBAR2_SEL0_SEL1_SHIFT  (8)
+#define XBAR2_SEL0_SEL1_MASK   (0xffu << 8)
+
+#define XBAR2_SEL1_SEL2_SHIFT  (0)
+#define XBAR2_SEL1_SEL2_MASK   (0xffu << 0)
+#define XBAR2_SEL1_SEL3_SHIFT  (8)
+#define XBAR2_SEL1_SEL3_MASK   (0xffu << 8)
+
+#define XBAR2_SEL2_SEL4_SHIFT  (0)
+#define XBAR2_SEL2_SEL4_MASK   (0xffu << 0)
+#define XBAR2_SEL2_SEL5_SHIFT  (8)
+#define XBAR2_SEL2_SEL5_MASK   (0xffu << 8)
+
+#define XBAR2_SEL3_SEL6_SHIFT  (0)
+#define XBAR2_SEL3_SEL6_MASK   (0xffu << 0)
+#define XBAR2_SEL3_SEL7_SHIFT  (8)
+#define XBAR2_SEL3_SEL7_MASK   (0xffu << 8)
+
+#define XBAR2_SEL4_SEL8_SHIFT  (0)
+#define XBAR2_SEL4_SEL8_MASK   (0xffu << 0)
+#define XBAR2_SEL4_SEL9_SHIFT  (8)
+#define XBAR2_SEL4_SEL9_MASK   (0xffu << 8)
+
+#define XBAR2_SEL5_SEL10_SHIFT  (0)
+#define XBAR2_SEL5_SEL10_MASK   (0xffu << 0)
+#define XBAR2_SEL5_SEL11_SHIFT  (8)
+#define XBAR2_SEL5_SEL11_MASK   (0xffu << 8)
+
+#define XBAR2_SEL6_SEL12_SHIFT  (0)
+#define XBAR2_SEL6_SEL12_MASK   (0xffu << 0)
+#define XBAR2_SEL6_SEL13_SHIFT  (8)
+#define XBAR2_SEL6_SEL13_MASK   (0xffu << 8)
+
+#define XBAR2_SEL7_SEL14_SHIFT  (0)
+#define XBAR2_SEL7_SEL14_MASK   (0xffu << 0)
+#define XBAR2_SEL7_SEL15_SHIFT  (8)
+#define XBAR2_SEL7_SEL15_MASK   (0xffu << 8)
+
+#define XBAR2_SEL8_SEL16_SHIFT  (0)
+#define XBAR2_SEL8_SEL16_MASK   (0xffu << 0)
+#define XBAR2_SEL8_SEL17_SHIFT  (8)
+#define XBAR2_SEL8_SEL17_MASK   (0xffu << 8)
+
+#define XBAR2_SEL9_SEL18_SHIFT  (0)
+#define XBAR2_SEL9_SEL18_MASK   (0xffu << 0)
+#define XBAR2_SEL9_SEL19_SHIFT  (8)
+#define XBAR2_SEL9_SEL19_MASK   (0xffu << 8)
+
+#define XBAR2_SEL10_SEL20_SHIFT  (0)
+#define XBAR2_SEL10_SEL20_MASK   (0xffu << 0)
+#define XBAR2_SEL10_SEL21_SHIFT  (8)
+#define XBAR2_SEL10_SEL21_MASK   (0xffu << 8)
+
+#define XBAR2_SEL11_SEL22_SHIFT  (0)
+#define XBAR2_SEL11_SEL22_MASK   (0xffu << 0)
+#define XBAR2_SEL11_SEL23_SHIFT  (8)
+#define XBAR2_SEL11_SEL23_MASK   (0xffu << 8)
+
+#define XBAR2_SEL12_SEL24_SHIFT  (0)
+#define XBAR2_SEL12_SEL24_MASK   (0xffu << 0)
+#define XBAR2_SEL12_SEL25_SHIFT  (8)
+#define XBAR2_SEL12_SEL25_MASK   (0xffu << 8)
+
+#define XBAR2_SEL13_SEL26_SHIFT  (0)
+#define XBAR2_SEL13_SEL26_MASK   (0xffu << 0)
+#define XBAR2_SEL13_SEL27_SHIFT  (8)
+#define XBAR2_SEL13_SEL27_MASK   (0xffu << 8)
+
+#define XBAR2_SEL14_SEL28_SHIFT  (0)
+#define XBAR2_SEL14_SEL28_MASK   (0xffu << 0)
+#define XBAR2_SEL14_SEL29_SHIFT  (8)
+#define XBAR2_SEL14_SEL29_MASK   (0xffu << 8)
+
+#define XBAR2_SEL15_SEL30_SHIFT  (0)
+#define XBAR2_SEL15_SEL30_MASK   (0xffu << 0)
+#define XBAR2_SEL15_SEL31_SHIFT  (8)
+#define XBAR2_SEL15_SEL31_MASK   (0xffu << 8)
+
+/* XBAR3 Register Offsets (base IMXRT_XBAR3_BASE = 0x42770000) */
+
+#define IMXRT_XBAR3_SEL0_OFFSET 0x0000  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL1_OFFSET 0x0002  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL2_OFFSET 0x0004  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL3_OFFSET 0x0006  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL4_OFFSET 0x0008  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL5_OFFSET 0x000a  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL6_OFFSET 0x000c  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL7_OFFSET 0x000e  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL8_OFFSET 0x0010  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL9_OFFSET 0x0012  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL10_OFFSET 0x0014  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL11_OFFSET 0x0016  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL12_OFFSET 0x0018  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL13_OFFSET 0x001a  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL14_OFFSET 0x001c  /* Crossbar Select Register */
+#define IMXRT_XBAR3_SEL15_OFFSET 0x001e  /* Crossbar Select Register */
+
+/* XBAR3 Register Addresses */
+
+#define IMXRT_XBAR3_SEL0 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL0_OFFSET)
+#define IMXRT_XBAR3_SEL1 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL1_OFFSET)
+#define IMXRT_XBAR3_SEL2 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL2_OFFSET)
+#define IMXRT_XBAR3_SEL3 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL3_OFFSET)
+#define IMXRT_XBAR3_SEL4 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL4_OFFSET)
+#define IMXRT_XBAR3_SEL5 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL5_OFFSET)
+#define IMXRT_XBAR3_SEL6 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL6_OFFSET)
+#define IMXRT_XBAR3_SEL7 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL7_OFFSET)
+#define IMXRT_XBAR3_SEL8 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL8_OFFSET)
+#define IMXRT_XBAR3_SEL9 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL9_OFFSET)
+#define IMXRT_XBAR3_SEL10 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL10_OFFSET)
+#define IMXRT_XBAR3_SEL11 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL11_OFFSET)
+#define IMXRT_XBAR3_SEL12 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL12_OFFSET)
+#define IMXRT_XBAR3_SEL13 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL13_OFFSET)
+#define IMXRT_XBAR3_SEL14 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL14_OFFSET)
+#define IMXRT_XBAR3_SEL15 (IMXRT_XBAR3_BASE + IMXRT_XBAR3_SEL15_OFFSET)
+
+/* XBAR3 Bit Fields */
+
+#define XBAR3_SEL0_SEL0_SHIFT  (0)
+#define XBAR3_SEL0_SEL0_MASK   (0xffu << 0)
+#define XBAR3_SEL0_SEL1_SHIFT  (8)
+#define XBAR3_SEL0_SEL1_MASK   (0xffu << 8)
+
+#define XBAR3_SEL1_SEL2_SHIFT  (0)
+#define XBAR3_SEL1_SEL2_MASK   (0xffu << 0)
+#define XBAR3_SEL1_SEL3_SHIFT  (8)
+#define XBAR3_SEL1_SEL3_MASK   (0xffu << 8)
+
+#define XBAR3_SEL2_SEL4_SHIFT  (0)
+#define XBAR3_SEL2_SEL4_MASK   (0xffu << 0)
+#define XBAR3_SEL2_SEL5_SHIFT  (8)
+#define XBAR3_SEL2_SEL5_MASK   (0xffu << 8)
+
+#define XBAR3_SEL3_SEL6_SHIFT  (0)
+#define XBAR3_SEL3_SEL6_MASK   (0xffu << 0)
+#define XBAR3_SEL3_SEL7_SHIFT  (8)
+#define XBAR3_SEL3_SEL7_MASK   (0xffu << 8)
+
+#define XBAR3_SEL4_SEL8_SHIFT  (0)
+#define XBAR3_SEL4_SEL8_MASK   (0xffu << 0)
+#define XBAR3_SEL4_SEL9_SHIFT  (8)
+#define XBAR3_SEL4_SEL9_MASK   (0xffu << 8)
+
+#define XBAR3_SEL5_SEL10_SHIFT  (0)
+#define XBAR3_SEL5_SEL10_MASK   (0xffu << 0)
+#define XBAR3_SEL5_SEL11_SHIFT  (8)
+#define XBAR3_SEL5_SEL11_MASK   (0xffu << 8)
+
+#define XBAR3_SEL6_SEL12_SHIFT  (0)
+#define XBAR3_SEL6_SEL12_MASK   (0xffu << 0)
+#define XBAR3_SEL6_SEL13_SHIFT  (8)
+#define XBAR3_SEL6_SEL13_MASK   (0xffu << 8)
+
+#define XBAR3_SEL7_SEL14_SHIFT  (0)
+#define XBAR3_SEL7_SEL14_MASK   (0xffu << 0)
+#define XBAR3_SEL7_SEL15_SHIFT  (8)
+#define XBAR3_SEL7_SEL15_MASK   (0xffu << 8)
+
+#define XBAR3_SEL8_SEL16_SHIFT  (0)
+#define XBAR3_SEL8_SEL16_MASK   (0xffu << 0)
+#define XBAR3_SEL8_SEL17_SHIFT  (8)
+#define XBAR3_SEL8_SEL17_MASK   (0xffu << 8)
+
+#define XBAR3_SEL9_SEL18_SHIFT  (0)
+#define XBAR3_SEL9_SEL18_MASK   (0xffu << 0)
+#define XBAR3_SEL9_SEL19_SHIFT  (8)
+#define XBAR3_SEL9_SEL19_MASK   (0xffu << 8)
+
+#define XBAR3_SEL10_SEL20_SHIFT  (0)
+#define XBAR3_SEL10_SEL20_MASK   (0xffu << 0)
+#define XBAR3_SEL10_SEL21_SHIFT  (8)
+#define XBAR3_SEL10_SEL21_MASK   (0xffu << 8)
+
+#define XBAR3_SEL11_SEL22_SHIFT  (0)
+#define XBAR3_SEL11_SEL22_MASK   (0xffu << 0)
+#define XBAR3_SEL11_SEL23_SHIFT  (8)
+#define XBAR3_SEL11_SEL23_MASK   (0xffu << 8)
+
+#define XBAR3_SEL12_SEL24_SHIFT  (0)
+#define XBAR3_SEL12_SEL24_MASK   (0xffu << 0)
+#define XBAR3_SEL12_SEL25_SHIFT  (8)
+#define XBAR3_SEL12_SEL25_MASK   (0xffu << 8)
+
+#define XBAR3_SEL13_SEL26_SHIFT  (0)
+#define XBAR3_SEL13_SEL26_MASK   (0xffu << 0)
+#define XBAR3_SEL13_SEL27_SHIFT  (8)
+#define XBAR3_SEL13_SEL27_MASK   (0xffu << 8)
+
+#define XBAR3_SEL14_SEL28_SHIFT  (0)
+#define XBAR3_SEL14_SEL28_MASK   (0xffu << 0)
+#define XBAR3_SEL14_SEL29_SHIFT  (8)
+#define XBAR3_SEL14_SEL29_MASK   (0xffu << 8)
+
+#define XBAR3_SEL15_SEL30_SHIFT  (0)
+#define XBAR3_SEL15_SEL30_MASK   (0xffu << 0)
+#define XBAR3_SEL15_SEL31_SHIFT  (8)
+#define XBAR3_SEL15_SEL31_MASK   (0xffu << 8)
+
+#endif /* __ARCH_ARM_SRC_IMXRT_HARDWARE_RT118X_IMXRT118X_XBAR_H */
